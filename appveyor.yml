@@ -39,4 +39,3 @@ build:
 
 test_script:
   - "conda build conda-recipe --test"
-  
