@@ -160,37 +160,12 @@ function InstallMiniconda ($python_version, $architecture, $python_home) {
 }
 
 
-function InstallMinicondaPip ($python_home) {
-    $pip_path = $python_home + "\Scripts\pip.exe"
-    $conda_path = $python_home + "\Scripts\conda.exe"
-    if (-not(Test-Path $pip_path)) {
-        Write-Host "Installing pip..."
-        $args = "install --yes pip"
-        Write-Host $conda_path $args
-        Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
-    } else {
-        Write-Host "pip already installed."
-    }
-}
-
-function InstallMinicondaCondaBuild ($python_home, $conda_build_version) {
-    $conda_path = $python_home + "\Scripts\conda.exe"
-    $conda_build__path = $python_home + "\Scripts\conda-build.exe"
-    if (-not(Test-Path $conda_build__path)) {
-        Write-Host "Installing conda build..."
-        $args = "install --yes conda-build==" + $conda_build_version
-        Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
-    } else {
-        Write-Host "conda-build already installed."
-    }
-}
-
-function InstallMinicondaBinstar ($python_home) {
+function InstallCondaPackages ($python_home, $spec) {
     $conda_path = $python_home + "\Scripts\conda.exe"
     $binstar_path = $python_home + "\Scripts\binstar.exe"
     if (-not(Test-Path $binstar_path)) {
         Write-Host "Installing binstar client..."
-        $args = "install --yes binstar"
+        $args = "install --yes " + $spec
         Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
     } else {
         Write-Host "conda-build already installed."
@@ -209,9 +184,7 @@ function UpdateConda ($python_home) {
 function main () {
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     UpdateConda $env:PYTHON
-    InstallMinicondaPip $env:PYTHON
-    InstallMinicondaCondaBuild $env:PYTHON "1.4.0"
-    InstallMinicondaBinstar $env:PYTHON
+    InstallCondaPackages $env:PYTHON "conda-build=1.4.0 pip jinja2 binstar"
 }
 
 main
