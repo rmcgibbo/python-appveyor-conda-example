@@ -1,9 +1,7 @@
 environment:
   # See README for information on the token
-  BINSTAR_TOKEN:
-    secure: rzQaJp/nba5u2lYZ2hR7xiTenDw/1ye5CirIIspaTbM=
   binstar_token:
-    secure: rzQaJp/nba5u2lYZ2hR7xrkIauvhO7M4P9XVr63a4GVR93oo5KRun7Mrnvg/L2bf
+    secure: EPnqw5UAitLbpf3dVQS0VtouUoQ2Ph5BAfKquUk2EZJpP97yHzBQi3S6WX0x5GR0
 
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
@@ -37,12 +35,8 @@ environment:
     #   CONDA_NPY: "18"
 
 install:
-  # - powershell .\\continuous-integration\\appveyor\\install.ps1
-  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - ps: "echo %BINSTAR_TOKEN%"
-  - ps: "echo %binstar_token%"
-  - SET
-  - exit 1
+  - powershell .\\continuous-integration\\appveyor\\install.ps1
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
 build: false
 
@@ -57,4 +51,4 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
-  - ps: "binstar -t %BINSTAR_TOKEN% upload --force (gci \"*.tar.bz2\")"
+  - ps: "binstar -t $env:BINSTAR_TOKEN upload --force (gci \"*.tar.bz2\")"
