@@ -1,0 +1,6 @@
+numpy
+conda-build
+pip
+nose
+setuptools
+cython
