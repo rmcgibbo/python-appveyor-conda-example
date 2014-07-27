@@ -35,24 +35,15 @@ environment:
       CONDA_NPY: "18"
 
 install:
-  - "powershell .\\continuous-integration\\appveyor\\install.ps1"
+  - powershell .\\continuous-integration\\appveyor\\install.ps1
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-
-  # Check that we have the expected version and architecture for Python
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-  - "%CMD_IN_ENV% conda build conda-recipe --no-test --quiet"
-
-  # Work around a conda-build / windows bug
-  - 'python.exe .\\continuous-integration\\appveyor\\rm_rf.py %PYTHON%\\envs\\_build'
-
 
 build: false
 
 test_script:
-  - "conda build conda-recipe --test --quiet"
+  - "%CMD_IN_ENV% conda build conda-recipe --quiet"
   # move the conda package into the current directory, to be an artifact
-  - "python continuous-integration\move-conda-package.py conda-recipe"
+  - python continuous-integration\move-conda-package.py conda-recipe
 
 artifacts:
   # Archive the generated conda package in the ci.appveyor.com build report.
@@ -60,4 +51,4 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
-  - "binstar -t $BINSTAR_TOKEN upload --force *.tar.bz2"
+  - binstar -t $BINSTAR_TOKEN upload --force *.tar.bz2
