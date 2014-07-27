@@ -12,5 +12,6 @@ setup(
     version = '1.0',
     description = 'This is a demo package with a compiled C extension.',
     ext_modules = cythonize([extension_module]),
+    zip_safe=False,
     packages=['pyappveyordemo', 'pyappveyordemo.tests'],
 )

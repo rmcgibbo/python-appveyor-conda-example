@@ -1,0 +1,24 @@
+package:
+  name: pyappveyordemo
+  version: !!str dev
+
+requirements:
+  build:
+    - python
+    - cython
+    - numpy
+    - setuptools
+
+  run:
+    - python
+    - numpy
+
+test:
+    requires:
+        - nose
+    commands:
+        - nosetests --exe pyappveyordemo
+
+about:
+  home: https://github.com/rmcgibbo/python-appveyor-conda-example
+  license: MIT
