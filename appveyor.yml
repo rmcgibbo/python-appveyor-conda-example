@@ -38,8 +38,9 @@ install:
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
   - "%CMD_IN_ENV% conda build conda-recipe --no-test --quiet"
+
   # Work around a conda-build / windows bug
-  - "%PYTHON%\python.exe .\\continuous-integration\\appveyor\\rm_rf.py %PYTHON%\\envs\\_build"
+  - '%PYTHON%\python.exe .\\continuous-integration\\appveyor\\rm_rf.py %PYTHON%\\envs\\_build'
 
 
 build: false
@@ -47,12 +48,12 @@ build: false
 test_script:
   - "conda build conda-recipe --test --quiet"
   # move the conda package into the current directory
-  - "FOR /F "delims=" %i IN ('conda build conda-recipe --output') DO set PKG=%i"
+  - "FOR /F \"delims=\" %i IN ('conda build conda-recipe --output') DO set PKG=%i"
   - "move %PKG% ."
 
 artifacts:
   # Archive the generated conda package in the ci.appveyor.com build report.
-  - path: *.tar.bz2
+  - path: '*.tar.bz2'
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
