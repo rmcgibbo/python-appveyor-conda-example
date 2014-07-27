@@ -6,11 +6,11 @@ python-appveyor-conda-example
 Demo project for building and shipping Python conda packages with Appveyor CI
 and Travis CI.
 
-AppVeyor and Travis are continuous integration platforms for Windows and Linux
-respectively. Both are free for Open Source projects and runs in the cloud.
+----------
 
-This sample Python project has a simple C compiled extension (statically
-generated from a Cython source file in this case). The build itself is
+AppVeyor and Travis are continuous integration platforms for Windows and Linux
+respectively. Both are free for Open Source projects and run in the cloud. This
+sample Python project has a simple C compiled extension. The build itself is
 configured by the setup.py file, and orchestrated by `conda build`.
 
 Conda is a cross-platform, Python-agnostic binary package manager. It is open
@@ -37,10 +37,8 @@ As currently set up, 8 binary packages are built:
  - 64 bit Linux (Ubuntu 12.04), Python 3.3
  - 64 bit Linux (Ubuntu 12.04), Python 3.4
 
-Users can then install these packages with
-```
-conda install -c https://conda.binstar.org/rmcgibbo pyappveyordemo
-```
+Users can then install these packages with `conda install -c https://conda.binstar.org/rmcgibbo pyappveyordemo`
+
 
 Binstar
 -------
