@@ -1,0 +1,21 @@
+language: c
+
+env:
+  matrix:
+    - python=2.6  CONDA_PY=26  CONDA_NPY=18
+    - python=2.7  CONDA_PY=27  CONDA_NPY=18
+    - python=3.3  CONDA_PY=33  CONDA_NPY=18
+    - python=3.4  CONDA_PY=34  CONDA_NPY=18
+
+  global:
+    - secure: "OlqoK1Et1cdCUMgTosLNHPOGw/TJtv1bxCW8NUatQ7betwPwW0ZGVUjS0IWr2/k7B+UI+D8zGbZ4nrGAvfgoUkh4/T80l/kecW5VLSQfNV8DtTyg9CA1qu19P6HeHn63YO8Hf4Io0coZshc4qq7UNhh1sWL+vcyPfDmBZZSTwuw="
+
+install:
+  - source continuous-integration/travis/install.sh
+  - conda build conda-recipe --no-test --quiet
+
+script:
+  - conda build conda-recipe --test
+
+after_success:
+  - binstar -t $BINSTAR_TOKEN upload --force $(conda build conda-recipe --output)

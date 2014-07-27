@@ -1,6 +1,6 @@
 environment:
   # See README for information on the binstar_token.
-  binstar_token:
+  BINSTAR_TOKEN:
     secure: rZK3KxBEutYRFw3p2HvU8CQvCDvgC5391CxVv2mTCKTTjLJLtGDVvfYoMPqV7JJz
 
   global:
@@ -60,4 +60,4 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
-  - "binstar -t $binstar_token upload --force *.tar.bz2"
+  - "binstar -t $BINSTAR_TOKEN upload --force *.tar.bz2"
