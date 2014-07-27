@@ -13,7 +13,7 @@ a binstar token to authenticate the appveyor server with binstar.
 
 This command will require entering your binstar credentials, and produce a token.
 ```
-$ binstar auth -n name-of-your-token -o omnia --max-age 22896000 -c --scopes api:read,api:write
+$ binstar auth -n name-of-your-token -o omnia --max-age 22896000 -c --scopes api
 ```
 
 The token grants its owner write permissions to your binstar account, so you
@@ -26,4 +26,11 @@ file, e.g.
 environment:
   binstar_token:
     secure: rZK3KxBEutYRFw3p2HvU8CQvCDvgC5391CxVv2mTCKTTjLJLtGDVvfYoMPqV7JJz
+```
+
+To encrypt the token for inclusion in the `.travis.yml` file, use the travis gem
+to generate the encrypted string
+
+```
+$ travis encrypt BINSTAR_TOKEN=your-binstar-token-from-above
 ```
