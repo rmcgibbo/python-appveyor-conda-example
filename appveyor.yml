@@ -1,15 +1,15 @@
 environment:
-  # See README for information on the token
-  BINSTAR_TOKEN:
-    secure: rzQaJp/nba5u2lYZ2hR7xiTenDw/1ye5CirIIspaTbM=
-  binstar_token:
-    secure: rzQaJp/nba5u2lYZ2hR7xrkIauvhO7M4P9XVr63a4GVR93oo5KRun7Mrnvg/L2bf
-
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\continuous-integration\\appveyor\\run_with_env.cmd"
+
+    # See README for information on the token
+    BINSTAR_TOKEN:
+      secure: rzQaJp/nba5u2lYZ2hR7xiTenDw/1ye5CirIIspaTbM=
+    binstar_token:
+      secure: rzQaJp/nba5u2lYZ2hR7xrkIauvhO7M4P9XVr63a4GVR93oo5KRun7Mrnvg/L2bf
 
   matrix:
     - PYTHON: "C:\\Python27_32"
