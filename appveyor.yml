@@ -34,8 +34,8 @@ install:
   - "conda list"
   - "pip freeze"
 
-build:
-  - "%CMD_IN_ENV% conda build conda-recipe --no-test"
+build: false
 
 test_script:
+  - "%CMD_IN_ENV% conda build conda-recipe --no-test"
   - "conda build conda-recipe --test"
