@@ -4,11 +4,13 @@ package:
 
 requirements:
   build:
+    - python
     - cython
     - numpy
     - setuptools
 
   run:
+    - python
     - numpy
 
 test:
