@@ -51,4 +51,5 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
+  - ps: "echo %BINSTAR_TOKEN%"
   - ps: "binstar -t %BINSTAR_TOKEN% upload --force (gci \"*.tar.bz2\")"
