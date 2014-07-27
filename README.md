@@ -13,7 +13,7 @@ a binstar token to authenticate the appveyor server with binstar.
 
 This command will require entering your binstar credentials, and produce a token.
 ```
-$ binstar auth -n name-of-your-token -o omnia --max-age 22896000 -c --scopes api:write
+$ binstar auth -n name-of-your-token -o omnia --max-age 22896000 -c --scopes api:read,api:write
 ```
 
 The token grants its owner write permissions to your binstar account, so you
