@@ -1,6 +1,5 @@
 package:
   name: pyappveyordemo
-  version: !!str dev
 
 requirements:
   build:
