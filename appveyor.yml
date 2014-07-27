@@ -29,10 +29,6 @@ install:
   # Check that we have the expected version and architecture for Python
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-  - "conda install --yes --file continuous_integration\requirements-conda.txt"
-  - "%CMD_IN_ENV% pip install -r continuous_integration\requirements-pip.txt"
-  - "conda list"
-  - "pip freeze"
 
 build: false
 
