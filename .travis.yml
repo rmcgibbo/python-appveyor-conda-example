@@ -15,7 +15,8 @@ install:
   - conda build conda-recipe --no-test --quiet
 
 script:
-  - conda build conda-recipe --test
+  - conda build conda-recipe --test --quiet
 
 after_success:
+  - ls $(conda build conda-recipe --output)
   - binstar -t $BINSTAR_TOKEN upload --force $(conda build conda-recipe --output)
