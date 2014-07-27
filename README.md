@@ -70,3 +70,12 @@ to generate the encrypted string
 ```
 $ travis encrypt BINSTAR_TOKEN=your-binstar-token-from-above
 ```
+
+
+Credits
+-------
+This demo is a fork of Olivier Grisel's (@ogrisel) [python-appveyor-demo](https://github.com/ogrisel/python-appveyor-demo),
+which builds Python wheel files using the same infrastructure.
+
+He, @FeodorFitsner, and @tomconte solved all the difficult parts of properly
+configuring the Windows SDKs and MSVC environment.
