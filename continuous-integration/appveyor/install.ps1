@@ -185,16 +185,16 @@ function InstallMinicondaCondaBuild ($python_home, $conda_build_version) {
     }
 }
 
-function InstallCondaBuildGithub ($python_home) {
-    $pip_path = $python_home + "\Scripts\pip.exe"
-    Write-Host "Installing conda-build from github master"
-    if (-not(Test-Path $pip_path)) {
-        Write-Host "Failed to find pip"
-        Exit 1
+function InstallMinicondaBinstar ($python_home) {
+    $conda_path = $python_home + "\Scripts\conda.exe"
+    $binstar_path = $python_home + "\Scripts\binstar.exe"
+    if (-not(Test-Path $binstar_path)) {
+        Write-Host "Installing binstar client..."
+        $args = "install --yes binstar"
+        Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
+    } else {
+        Write-Host "conda-build already installed."
     }
-    $url = "https://github.com/conda/conda-build/zipball/master"
-    $args = "install " + $url
-    Start-Process -FilePath "$pip_path" -ArgumentList $args -Wait -Passthru
 }
 
 function UpdateConda ($python_home) {
@@ -210,8 +210,8 @@ function main () {
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     UpdateConda $env:PYTHON
     InstallMinicondaPip $env:PYTHON
-    # InstallCondaBuildGithub $env:PYTHON
     InstallMinicondaCondaBuild $env:PYTHON "1.4.0"
+    InstallMinicondaBinstar $env:PYTHON
 }
 
 main
