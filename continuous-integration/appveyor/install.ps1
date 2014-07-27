@@ -48,7 +48,7 @@ function InstallPython ($python_version, $architecture, $python_home) {
         Write-Host $python_home "already exists, skipping."
         return $false
     }
-    if ($architecture -eq "32") {
+    if ($architecture -match "32") {
         $platform_suffix = ""
     } else {
         $platform_suffix = ".amd64"
@@ -96,7 +96,7 @@ function InstallPip ($python_home) {
 
 function DownloadMiniconda ($python_version, $platform_suffix) {
     $webclient = New-Object System.Net.WebClient
-    if ($python_version -eq "3.4") {
+    if ($python_version -match "3.4") {
         $filename = "Miniconda3-3.5.5-Windows-" + $platform_suffix + ".exe"
     } else {
         $filename = "Miniconda-3.5.5-Windows-" + $platform_suffix + ".exe"
@@ -138,11 +138,12 @@ function InstallMiniconda ($python_version, $architecture, $python_home) {
         Write-Host $python_home "already exists, skipping."
         return $false
     }
-    if ($architecture -eq "32") {
+    if ($architecture -match "32") {
         $platform_suffix = "x86"
     } else {
         $platform_suffix = "x86_64"
     }
+
     $filepath = DownloadMiniconda $python_version $platform_suffix
     Write-Host "Installing" $filepath "to" $python_home
     $install_log = $python_home + ".log"
@@ -184,12 +185,12 @@ function InstallMinicondaCondaBuild ($python_home) {
     }
 }
 
-function InstallCondaBuildGithub( $python_home) {
+function InstallCondaBuildGithub ($python_home) {
     $pip_path = $python_home + "\Scripts\pip.exe"
     Write-Host "Installing conda-build from github master"
     if (-not(Test-Path $pip_path)) {
         Write-Host "Failed to find pip"
-        # Exit 1
+        Exit 1
     }
     $url = "https://github.com/conda/conda-build/zipball/master"
     $args = "install " + $url
@@ -209,7 +210,7 @@ function main () {
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     UpdateConda $env:PYTHON
     InstallMinicondaPip $env:PYTHON
-    InstallCondaBuildGithub $env:PYHON
+    InstallCondaBuildGithub $env:PYTHON
     # InstallMinicondaCondaBuild $env:PYTHON
 }
 
