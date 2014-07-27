@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import sys
 import stat
@@ -8,14 +9,12 @@ def remove_readonly(func, path, excinfo):
     func(path)
 
 def main():
-    i = 0
-    while os.path.exists(sys.argv[1]) and i < 10:
-        try:
-            shutil.rmtree(sys.argv[1], onerror=remove_readonly)
-        except Exception as e:
-            print "Error"
-            print e
-        i += 1
+    print(sys.executable)
+    try:
+        shutil.rmtree(sys.argv[1], onerror=remove_readonly)
+    except Exception as e:
+        print("Error")
+        print(e)
 
 if __name__ == '__main__':
     main()
