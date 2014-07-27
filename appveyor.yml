@@ -51,4 +51,4 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
-  - binstar -t $BINSTAR_TOKEN upload --force *.tar.bz2
+  - "binstar -t %BINSTAR_TOKEN% upload --force *.tar.bz2"
