@@ -172,8 +172,23 @@ function InstallMinicondaPip ($python_home) {
     }
 }
 
+function InstallMinicondaCondaBuild ($python_home) {
+    $conda_path = $python_home + "\Scripts\conda.exe"
+    $conda_build__path = $python_home + "\Scripts\conda-build.exe"
+    if (-not(Test-Path $conda_build__path)) {
+        Write-Host "Installing conda build..."
+        $args = "install --yes conda-build"
+        Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
+    } else {
+        Write-Host "conda-build already installed."
+    }
+}
+
+
 function main () {
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    # InstallMinicondaPip $env:PYTHON
+    InstallMinicondaCondaBuild $env:PYTHON
 }
 
 main

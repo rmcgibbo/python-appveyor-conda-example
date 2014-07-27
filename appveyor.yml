@@ -33,7 +33,5 @@ install:
 build: false
 
 test_script:
-  - "conda list"
-  - "%CMD_IN_ENV% conda list"
   - "%CMD_IN_ENV% conda build conda-recipe --no-test"
   - "conda build conda-recipe --test"
