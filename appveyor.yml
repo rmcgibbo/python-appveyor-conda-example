@@ -1,7 +1,9 @@
 environment:
   # See README for information on the token
   BINSTAR_TOKEN:
-    secure: "EPnqw5UAitLbpf3dVQS0VtouUoQ2Ph5BAfKquUk2EZJpP97yHzBQi3S6WX0x5GR0"
+    secure: rzQaJp/nba5u2lYZ2hR7xiTenDw/1ye5CirIIspaTbM=
+  binstar_token:
+    secure: rzQaJp/nba5u2lYZ2hR7xrkIauvhO7M4P9XVr63a4GVR93oo5KRun7Mrnvg/L2bf
 
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
@@ -16,27 +18,30 @@ environment:
       CONDA_PY: "27"
       CONDA_NPY: "18"
 
-    - PYTHON: "C:\\Python27_64"
-      PYTHON_VERSION: "2.7"
-      PYTHON_ARCH: "64"
-      CONDA_PY: "27"
-      CONDA_NPY: "18"
-
-    - PYTHON: "C:\\Python34_32"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "32"
-      CONDA_PY: "34"
-      CONDA_NPY: "18"
-
-    - PYTHON: "C:\\Python34_64"
-      PYTHON_VERSION: "3.4"
-      PYTHON_ARCH: "64"
-      CONDA_PY: "34"
-      CONDA_NPY: "18"
+    # - PYTHON: "C:\\Python27_64"
+    #   PYTHON_VERSION: "2.7"
+    #   PYTHON_ARCH: "64"
+    #   CONDA_PY: "27"
+    #   CONDA_NPY: "18"
+    #
+    # - PYTHON: "C:\\Python34_32"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "32"
+    #   CONDA_PY: "34"
+    #   CONDA_NPY: "18"
+    #
+    # - PYTHON: "C:\\Python34_64"
+    #   PYTHON_VERSION: "3.4"
+    #   PYTHON_ARCH: "64"
+    #   CONDA_PY: "34"
+    #   CONDA_NPY: "18"
 
 install:
   - powershell .\\continuous-integration\\appveyor\\install.ps1
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - ps: "echo %BINSTAR_TOKEN%"
+  - ps: "echo %binstar_token%"
+  - exit 1
 
 build: false
 
@@ -51,5 +56,4 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
-  - ps: "echo %BINSTAR_TOKEN%"
   - ps: "binstar -t %BINSTAR_TOKEN% upload --force (gci \"*.tar.bz2\")"
