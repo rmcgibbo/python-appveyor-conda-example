@@ -38,9 +38,11 @@ install:
   - "python --version"
   - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
   - "%CMD_IN_ENV% conda build conda-recipe --no-test --quiet"
-  - "cmd /c rd /s /q %PYTHON%\\envs\\_build"
+  # Work around a conda-build / windows bug
+  - "python .\\continuous-integration\\appveyor\\rm_rf.py %PYTHON%\\envs\\_build"
+
 
 build: false
 
 test_script:
-  - "conda build conda-recipe --test"
+  - "conda build conda-recipe --test --quiet"
