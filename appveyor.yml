@@ -47,9 +47,8 @@ build: false
 
 test_script:
   - "conda build conda-recipe --test --quiet"
-  # move the conda package into the current directory
-  - "FOR /F \"delims=\" %i IN ('conda build conda-recipe --output') DO set PKG=%i"
-  - "move %PKG% ."
+  # move the conda package into the current directory, to be an artifact"
+  - "python .\\continuous-integration\\appveyor\\move-conda-package.py conda-recipe"
 
 artifacts:
   # Archive the generated conda package in the ci.appveyor.com build report.
