@@ -1,8 +1,46 @@
 python-appveyor-conda-example
 =============================
+[![Travis Build Status](https://travis-ci.org/rmcgibbo/python-appveyor-conda-example.png?branch=master)](https://travis-ci.org/rmcgibbo/python-appveyor-conda-example)
+[![Appveyor Build status](https://ci.appveyor.com/api/projects/status/ek4ufqupmnpv6ixn)](https://ci.appveyor.com/project/rmcgibbo/python-appveyor-conda-example)
 
-Demo project for building Python conda packages with appveyor.com
+Demo project for building and shipping Python conda packages with Appveyor CI
+and Travis CI.
 
+AppVeyor and Travis are continuous integration platforms for Windows and Linux
+respectively. Both are free for Open Source projects and runs in the cloud.
+
+This sample Python project has a simple C compiled extension (statically
+generated from a Cython source file in this case). The build itself is
+configured by the setup.py file, and orchestrated by `conda build`.
+
+Conda is a cross-platform, Python-agnostic binary package manager. It is open
+source (BSD), and is the package manager used by [Anaconda](http://docs.continuum.io/anaconda/index.html>)
+scientific python distribution. It is particularly well suited for managing
+and distributing environments for the scientific python (NumPy, Scipy) stack,
+where complex system dependencies and build requirements -- e.g C and Fortran
+extensions -- are the norm. For more information about conda, see
+[this blog post](http://technicaldiscovery.blogspot.com/2013/12/why-i-promote-conda.html)
+by Travis Oliphant, the original developer of Numpy and developer of conda.
+
+On each commit to Github, both CI services perform automated builds and run the
+package's tests. The package is built as a conda binary and directly uploaded
+to [binstar.org](https://conda.binstar.org/)
+
+As currently set up, 8 binary packages are built:
+
+ - 32 bit Windows, Python 2.7
+ - 32 bit Windows, Python 3.3
+ - 64 bit Windows, Python 2.7
+ - 64 bit Windows, Python 3.3
+ - 64 bit Linux (Ubuntu 12.04), Python 2.6
+ - 64 bit Linux (Ubuntu 12.04), Python 2.7
+ - 64 bit Linux (Ubuntu 12.04), Python 3.3
+ - 64 bit Linux (Ubuntu 12.04), Python 3.4
+
+Users can then install these packages with
+```
+conda install -c https://conda.binstar.org/rmcgibbo pyappveyordemo
+```
 
 Binstar
 -------
@@ -13,7 +51,7 @@ a binstar token to authenticate the appveyor server with binstar.
 
 This command will require entering your binstar credentials, and produce a token.
 ```
-$ binstar auth -n name-of-your-token -o omnia --max-age 22896000 -c --scopes api
+$ binstar auth -n name-of-your-token --max-age 22896000 -c --scopes api
 ```
 
 The token grants its owner write permissions to your binstar account, so you
@@ -24,8 +62,8 @@ file, e.g.
 
 ```
 environment:
-  binstar_token:
-    secure: rZK3KxBEutYRFw3p2HvU8CQvCDvgC5391CxVv2mTCKTTjLJLtGDVvfYoMPqV7JJz
+  BINSTAR_TOKEN:
+    secure: Yfr/w3h22F5s/wGT8RYrSt6jRD2UHwUm8PPWjzaGh2B3bTBZAf4uXqCO/yUnCXYe
 ```
 
 To encrypt the token for inclusion in the `.travis.yml` file, use the travis gem
