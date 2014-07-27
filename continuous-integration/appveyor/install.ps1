@@ -184,11 +184,23 @@ function InstallMinicondaCondaBuild ($python_home) {
     }
 }
 
+function InstallCondaBuildGithub( $python_home) {
+    $pip_path = $python_home + "\Scripts\pip.exe"
+    if (-not(Test-Path $pip_path)) {
+        Write-Host "Failed to find pip"
+        Exit 1
+    }
+    $url = "https://github.com/conda/conda-build/zipball/master"
+    $args = "install " + $url
+    Start-Process -FilePath "$pip_path" -ArgumentList $args -Wait -Passthru
+}
+
 
 function main () {
     InstallMiniconda $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    # InstallMinicondaPip $env:PYTHON
-    InstallMinicondaCondaBuild $env:PYTHON
+    InstallMinicondaPip $env:PYTHON
+    InstallCondaBuildGithub $env:PYHON
+    # InstallMinicondaCondaBuild $env:PYTHON
 }
 
 main
