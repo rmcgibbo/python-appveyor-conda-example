@@ -162,14 +162,9 @@ function InstallMiniconda ($python_version, $architecture, $python_home) {
 
 function InstallCondaPackages ($python_home, $spec) {
     $conda_path = $python_home + "\Scripts\conda.exe"
-    $binstar_path = $python_home + "\Scripts\binstar.exe"
-    if (-not(Test-Path $binstar_path)) {
-        Write-Host "Installing binstar client..."
-        $args = "install --yes " + $spec
-        Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
-    } else {
-        Write-Host "conda-build already installed."
-    }
+    $args = "install --yes " + $spec
+    Write-Host ("conda " + $args)
+    Start-Process -FilePath "$conda_path" -ArgumentList $args -Wait -Passthru
 }
 
 function UpdateConda ($python_home) {
