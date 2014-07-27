@@ -1,11 +1,10 @@
 environment:
-    # See README for information on the token
-    BINSTAR_TOKEN:
-      secure: rzQaJp/nba5u2lYZ2hR7xiTenDw/1ye5CirIIspaTbM=
-    binstar_token:
-      secure: rzQaJp/nba5u2lYZ2hR7xrkIauvhO7M4P9XVr63a4GVR93oo5KRun7Mrnvg/L2bf
+  # See README for information on the token
+  BINSTAR_TOKEN:
+    secure: rzQaJp/nba5u2lYZ2hR7xiTenDw/1ye5CirIIspaTbM=
+  binstar_token:
+    secure: rzQaJp/nba5u2lYZ2hR7xrkIauvhO7M4P9XVr63a4GVR93oo5KRun7Mrnvg/L2bf
 
-environment:
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
