@@ -51,4 +51,4 @@ artifacts:
 
 on_success:
   # Upload built binaries to binstar.org.
-  - ps: "binstar -t $env:BINSTAR_TOKEN upload --force (gci \"*.tar.bz2\")"
+  - ps: "binstar -t $env:BINSTAR_TOKEN upload --force (gci \"*.tar.bz2\"); exit 0"
