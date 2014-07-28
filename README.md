@@ -2,6 +2,7 @@ python-appveyor-conda-example
 =============================
 [![Travis Build Status](https://travis-ci.org/rmcgibbo/python-appveyor-conda-example.png?branch=master)](https://travis-ci.org/rmcgibbo/python-appveyor-conda-example)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/ek4ufqupmnpv6ixn)](https://ci.appveyor.com/project/rmcgibbo/python-appveyor-conda-example)
+[![Binstar Badge](https://binstar.org/rmcgibbo/pyappveyordemo/badges/version.svg)](https://binstar.org/rmcgibbo/pyappveyordemo)
 
 Demo project for building and shipping Python conda packages with Appveyor CI
 and Travis CI.
