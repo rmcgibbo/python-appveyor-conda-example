@@ -30,13 +30,13 @@ to [binstar.org](https://conda.binstar.org/)
 As currently set up, 8 binary packages are built:
 
  - 32 bit Windows, Python 2.7
- - 32 bit Windows, Python 3.3
+ - 32 bit Windows, Python 3.5
  - 64 bit Windows, Python 2.7
- - 64 bit Windows, Python 3.3
+ - 64 bit Windows, Python 3.5
  - 64 bit Linux (Ubuntu 12.04), Python 2.6
  - 64 bit Linux (Ubuntu 12.04), Python 2.7
- - 64 bit Linux (Ubuntu 12.04), Python 3.3
  - 64 bit Linux (Ubuntu 12.04), Python 3.4
+ - 64 bit Linux (Ubuntu 12.04), Python 3.5
 
 Users can then install these packages with `conda install -c https://conda.binstar.org/rmcgibbo pyappveyordemo`
 
