@@ -1,9 +1,14 @@
 MINICONDA_URL="http://repo.continuum.io/miniconda"
-MINICONDA_FILE="Miniconda-latest-Linux-x86_64.sh"
-wget "${MINICONDA_URL}/${MINICONDA_FILE}"
-bash $MINICONDA_FILE -b
 
-export PATH=$HOME/miniconda/bin:$PATH
-
-conda update --yes conda
-conda install --yes pip conda-build jinja2 binstar
+if [ ${TRAVIS_PYTHON_VERSION:0:1} == "2" ]; then
+    travis_retry wget "${MINICONDA_URL}/Miniconda2-latest-Linux-x86_64.sh" -O miniconda.sh;
+else
+    travis_retry wget "${MINICONDA_URL}/Miniconda3-latest-Linux-x86_64.sh" -O miniconda.sh;
+fi
+chmod +x miniconda.sh
+./miniconda.sh -b -p "${HOME}/miniconda"
+export PATH="${HOME}/miniconda/bin:${PATH}"
+hash -r
+conda config --set always_yes yes --set changeps1 no
+conda update -q conda
+conda install pip conda-build jinja2 binstar
