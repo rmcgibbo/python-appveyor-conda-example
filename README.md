@@ -2,7 +2,7 @@ python-appveyor-conda-example
 =============================
 [![Travis Build Status](https://travis-ci.org/rmcgibbo/python-appveyor-conda-example.png?branch=master)](https://travis-ci.org/rmcgibbo/python-appveyor-conda-example)
 [![Appveyor Build status](https://ci.appveyor.com/api/projects/status/ek4ufqupmnpv6ixn)](https://ci.appveyor.com/project/rmcgibbo/python-appveyor-conda-example)
-[![Binstar Badge](https://binstar.org/rmcgibbo/pyappveyordemo/badges/version.svg)](https://binstar.org/rmcgibbo/pyappveyordemo)
+[![Anaconda Badge](https://anaconda.org/rmcgibbo/pyappveyordemo/badges/version.svg)](https://anaconda.org/rmcgibbo/pyappveyordemo)
 
 Demo project for building and shipping Python `conda` packages with AppVeyor CI
 and Travis CI.
@@ -25,7 +25,7 @@ by Travis Oliphant, the original developer of NumPy and developer of `conda`.
 
 On each commit to GitHub, both CI services perform automated builds and run the
 package's tests. The package is built as a `conda` binary and directly uploaded
-to [binstar.org](https://conda.binstar.org/)
+to [anaconda.org](https://anaconda.org)
 
 As currently set up, 8 binary packages are built:
 
@@ -41,15 +41,15 @@ As currently set up, 8 binary packages are built:
 Users can then install these packages with
 
 ```
-$ conda install -c https://conda.binstar.org/rmcgibbo pyappveyordemo
+$ conda install -c rmcgibbo pyappveyordemo
 ```
 
-Binstar
+Anaconda
 -------
 
-[Binstar.org](https://binstar.org) is a website for hosting public and private `conda`
-packages. To upload your conda binaries built on AppVeyor to binstar, you'll first 
-need to create a binstar token to authenticate the AppVeyor server with binstar.
+[anaconda.org](https://anaconda.org) is a website for hosting public and private `conda`
+packages. To upload your conda binaries built on AppVeyor to Anaconda, you'll first
+need to create an binstar token to authenticate the AppVeyor server with binstar.
 
 This command will require entering your binstar credentials, and produce a token.
 
