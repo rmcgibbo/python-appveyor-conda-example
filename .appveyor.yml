@@ -40,7 +40,7 @@ install:
   - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
   # Load the conda root environment, configure and install some packages
-  - 'call %CONDA%\Scripts\'activate.bat'
+  - 'call %CONDA%\Scripts\activate.bat'
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
