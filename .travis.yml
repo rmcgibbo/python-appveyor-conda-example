@@ -4,9 +4,12 @@ os:
 osx_image: xcode8.3
 dist: trusty
 sudo: false
+
+# For testing only:
 branches:
   only:
     - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+
 # Do not use Travis Python to save some time.
 language: generic
 env:
