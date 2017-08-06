@@ -1,0 +1,78 @@
+version: '{build}'
+image: Visual Studio 2015
+
+platform:
+#- x86
+- x64
+
+environment:
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\tools\\appveyor\\run_with_env.cmd"
+    ANACONDA_TOKEN:
+      secure: UMSXPRCnP38rwuIS4dAq/ukkO7MNo513Qn8XwLPrtGtbGA0QGEDx8aWUQMsLrlaK
+    PYPKG: pycydemo
+    
+
+  matrix:
+    - PYTHON_VERSION: 2.7
+      CONDA: C:\\Miniconda
+
+    - PYTHON_VERSION: 3.5
+      CONDA: C:\\Miniconda35
+
+    - PYTHON_VERSION: 3.6
+      CONDA: C:\\Miniconda36
+
+branches:
+  only:
+    - master
+
+init:
+  - ECHO %PLATFORM% %CONDA% %PLATFORM%
+  - IF "%PLATFORM%"=="X64" ( SET CONDA=%CONDA%-x64 )
+  - ECHO %PYTHON_VERSION% %CONDA% %PLATFORM%
+
+install:
+  # Make sure the compiler is accessible
+  - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
+
+  # Load the conda root environment, configure and install some packages
+  - "call %CONDA%\\Scripts\\activate.bat"
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  - conda install nose conda-build anaconda-client numpy cython
+
+build: false
+
+test_script:
+  # Build the package
+  - "%CMD_IN_ENV% conda build tools/conda.recipe"
+
+  # Install the package
+  - conda install --use-local %PYPKG%
+
+  # Run the tests outside the source tree.
+  - pushd %HOMEPATH% && (nosetests -v %PYPKG% & popd)
+
+after_test:
+  # Copy the conda build to the home dir, such that it can be registerd as an artifact
+  - move %CONDA%\conda-bld .
+
+artifacts:
+  # Files to be uploaded
+  - path: 'conda-bld\win-*\*.tar.bz2'
+
+on_success:
+  - IF "%APPVEYOR_REPO_TAG%" == "true" (
+      IF "%APPVEYOR_REPO_TAG_NAME:a=%" == "%APPVEYOR_REPO_TAG_NAME%" (
+        anaconda -t %ANACONDA_TOKEN% upload .\\conda-bld\\win-*\\*.tar.bz2 --no-progress -l alpha
+      ) ELSE IF "%APPVEYOR_REPO_TAG_NAME:b=%" == "%APPVEYOR_REPO_TAG_NAME%" (
+        anaconda -t %ANACONDA_TOKEN% upload .\\conda-bld\\win-*\\*.tar.bz2 --no-progress -l beta
+      ) ELSE (
+        anaconda -t %ANACONDA_TOKEN% upload .\\conda-bld\\win-*\\*.tar.bz2 --no-progress
+      )
+    )
