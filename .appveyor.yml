@@ -46,7 +46,7 @@ install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
-  - conda install nose conda-build anaconda-client numpy cython
+  - conda install conda-build anaconda-client numpy cython
 
 build: false
 
