@@ -51,7 +51,7 @@ else:
 
 setup(
     name=pypkg,
-    version='1.0',
+    version=__version__,
     description='Demo python+cython project',
     author='Toon Verstraelen',
     author_email='Toon.Verstraelen@UGent.be',
