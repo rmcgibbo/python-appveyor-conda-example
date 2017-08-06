@@ -17,8 +17,7 @@ environment:
     ANACONDA_TOKEN:
       secure: UMSXPRCnP38rwuIS4dAq/ukkO7MNo513Qn8XwLPrtGtbGA0QGEDx8aWUQMsLrlaK
     PYPKG: pycydemo
-    GITHUB_REPO: python-cython-ci-example
-    GITHUB_ORG: tovstra
+    GITHUB_REPO_NAME: tovstra/python-cython-ci-example
 
   matrix:
     - PYTHON_VERSION: 2.7
@@ -38,9 +37,12 @@ init:
   - ps: if ($Env:PLATFORM -eq "x64") { $Env:CONDA = "${Env:CONDA}-x64" }
   - ps: Write-Host $Env:PYTHON_VERSION
   - ps: Write-Host $Env:CONDA
+  - ps: Write-Host $Env:GITHUB_REPO_NAME
+  - ps: Write-Host $Env:CONDA
   - ps: Write-Host $Env:PLATFORM
   - ps: Write-Host $Env:APPVEYOR_REPO_TAG
   - ps: Write-Host $Env:APPVEYOR_REPO_TAG_NAME
+  - ps: Write-Host $Env:APPVEYOR_REPO_NAME
 
 install:
   # Make sure the compiler is accessible
@@ -79,7 +81,7 @@ on_success:
   # Upload to anaconda, with the correct label derived from the version tag.
   - ps:
       if (($Env:APPVEYOR_REPO_TAG -eq "true") -and
-          ($Env:APPVEYOR_REPO_NAME -eq "${Env:GITHUB_ORG}/${Env:GITHUB_REPO}")) {
+          ($Env:APPVEYOR_REPO_NAME -eq ${Env:GITHUB_REPO_NAME}")) {
         $tar_glob = ".\conda-bld\win-*\${Env:PYPKG}-${Env:APPVEYOR_REPO_TAG_NAME}-*.tar.bz2";
         Write-Host $tar_glob;
         if ($Env:APPVEYOR_REPO_TAG_NAME -like "*a*") {
