@@ -2,7 +2,7 @@ version: '{build}'
 image: Visual Studio 2015
 
 # For testing only...
-skip_non_tags: true
+#skip_non_tags: true
 
 platform:
 - x86

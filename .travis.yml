@@ -6,9 +6,9 @@ dist: trusty
 sudo: false
 
 # For testing only:
-branches:
-  only:
-    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+#branches:
+#  only:
+#    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 # Do not use Travis Python to save some time.
 language: generic
