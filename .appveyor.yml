@@ -70,9 +70,9 @@ artifacts:
 
 on_success:
   - IF "%APPVEYOR_REPO_TAG%" == "true" (
-      IF "%APPVEYOR_REPO_TAG_NAME:a=%" == "%APPVEYOR_REPO_TAG_NAME%" (
+      IF NOT "%APPVEYOR_REPO_TAG_NAME:a=%" == "%APPVEYOR_REPO_TAG_NAME%" (
         anaconda -t %ANACONDA_TOKEN% upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha
-      ) ELSE IF "%APPVEYOR_REPO_TAG_NAME:b=%" == "%APPVEYOR_REPO_TAG_NAME%" (
+      ) ELSE IF NOT "%APPVEYOR_REPO_TAG_NAME:b=%" == "%APPVEYOR_REPO_TAG_NAME%" (
         anaconda -t %ANACONDA_TOKEN% upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta
       ) ELSE (
         anaconda -t %ANACONDA_TOKEN% upload .\conda-bld\win-*\*.tar.bz2 --no-progress

@@ -58,7 +58,8 @@ script:
 # Build the conda package
 - conda build -q tools/conda.recipe
 
-# Build source package, should work too and needed for deployment to Github.
+# Build source package, should work too and needed for deployment to Github and
+# PyPI.
 - python setup.py sdist
 
 # Install Conda package
