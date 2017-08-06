@@ -17,7 +17,7 @@ environment:
     ANACONDA_TOKEN:
       secure: UMSXPRCnP38rwuIS4dAq/ukkO7MNo513Qn8XwLPrtGtbGA0QGEDx8aWUQMsLrlaK
     PYPKG: pycydemo
-    GITHUB_REPO_NAME: tovstra/python-cython-ci-example
+    GITHUB_REPO_NAME: tovrstra/python-cython-ci-example
 
   matrix:
     - PYTHON_VERSION: 2.7
