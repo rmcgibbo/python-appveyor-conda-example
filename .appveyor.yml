@@ -72,7 +72,7 @@ on_success:
   - ps: if ($APPVEYOR_REPO_TAG -eq "true") {
       if ($APPVEYOR_REPO_TAG_NAME -like "*a*) {
         & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha
-      } elseif ($APPVEYOR_REPO_TAG_NAME -like "*a*) {
+      } elseif ($APPVEYOR_REPO_TAG_NAME -like "*b*") {
         & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta
       } else {
         & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress
