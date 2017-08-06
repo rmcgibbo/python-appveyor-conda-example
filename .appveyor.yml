@@ -5,7 +5,7 @@ image: Visual Studio 2015
 skip_non_tags: true
 
 platform:
-#- x86
+- x86
 - x64
 
 environment:
