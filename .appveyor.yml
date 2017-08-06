@@ -38,7 +38,7 @@ init:
   - IF "%PLATFORM%"=="x64" ( SET CONDA=%CONDA%-x64 )
   - ECHO %PYTHON_VERSION% %CONDA% %PLATFORM%
   - dir
-  - "dir c:\"
+  - "dir c:\\"
 
 install:
   # Make sure the compiler is accessible
