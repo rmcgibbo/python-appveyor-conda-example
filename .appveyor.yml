@@ -36,8 +36,8 @@ branches:
 init:
   - IF "%PLATFORM%"=="x64" ( SET "CONDA=%CONDA%-x64" )
   - ECHO "%PYTHON_VERSION%" "%CONDA%" "%PLATFORM%"
-  - ps: Write-Host "APPVEYOR_REPO_TAG" $APPVEYOR_REPO_TAG
-  - ps: Write-Host "APPVEYOR_REPO_TAG_NAME" $APPVEYOR_REPO_TAG_NAME
+  - ps: Write-Host "APPVEYOR_REPO_TAG" $Env:APPVEYOR_REPO_TAG
+  - ps: Write-Host "APPVEYOR_REPO_TAG_NAME" $Env:APPVEYOR_REPO_TAG_NAME
 
 install:
   # Make sure the compiler is accessible
@@ -74,12 +74,12 @@ on_success:
   # This is virtually impossible with a normal dos batch script...
   # Upload to anaconda, with the correct label derived from the version tag.
   - ps: 
-      if ($APPVEYOR_REPO_TAG -eq "true") {
-        if ($APPVEYOR_REPO_TAG_NAME -like "*a*") {
-          & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha
-        } elseif ($APPVEYOR_REPO_TAG_NAME -like "*b*") {
-          & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta
+      if ($Env:APPVEYOR_REPO_TAG -eq "true") {
+        if ($Env:APPVEYOR_REPO_TAG_NAME -like "*a*") {
+          & anaconda -t $Env:ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha
+        } elseif ($Env:APPVEYOR_REPO_TAG_NAME -like "*b*") {
+          & anaconda -t $Env:ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta
         } else {
-          & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress
+          & anaconda -t $Env:ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress
         }
       }
