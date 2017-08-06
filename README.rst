@@ -1,5 +1,7 @@
 .. image:: https://travis-ci.org/tovrstra/pycydemo.svg?branch=master
     :target: https://travis-ci.org/tovrstra/pycydemo
+.. image:: https://ci.appveyor.com/api/projects/status/e5anh744b456p5at/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/tovrstra/python-cython-ci-example
 
 Demo project for building and deploying a Python+Cython packages with AppVeyor
 CI and Travis CI.

@@ -32,7 +32,7 @@ branches:
 
 init:
   - ECHO %PLATFORM% %CONDA% %PLATFORM%
-  - IF "%PLATFORM%"=="X64" ( SET CONDA=%CONDA%-x64 )
+  - IF "%PLATFORM%"=="x64" ( SET CONDA=%CONDA%-x64 )
   - ECHO %PYTHON_VERSION% %CONDA% %PLATFORM%
 
 install:
