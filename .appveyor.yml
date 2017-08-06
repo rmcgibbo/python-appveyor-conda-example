@@ -13,11 +13,12 @@ environment:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: 'cmd /E:ON /V:ON /C .\tools\appveyor\run_with_env.cmd'
-    ANACONDA_TOKEN:
-      secure: UMSXPRCnP38rwuIS4dAq/ukkO7MNo513Qn8XwLPrtGtbGA0QGEDx8aWUQMsLrlaK
-    PYPKG: pycydemo
-
+    - CMD_IN_ENV: 'cmd /E:ON /V:ON /C .\tools\appveyor\run_with_env.cmd'
+    - ANACONDA_TOKEN:
+        secure: UMSXPRCnP38rwuIS4dAq/ukkO7MNo513Qn8XwLPrtGtbGA0QGEDx8aWUQMsLrlaK
+    - PYPKG: pycydemo
+    - GITHUB_REPO: python-cython-ci-example
+    - GITHUB_ORG: tovstra
 
   matrix:
     - PYTHON_VERSION: 2.7
@@ -76,8 +77,9 @@ artifacts:
 on_success:
   # This is virtually impossible with a normal dos batch script...
   # Upload to anaconda, with the correct label derived from the version tag.
-  - ps: 
-      if ($Env:APPVEYOR_REPO_TAG -eq "true") {
+  - ps:
+      if (($Env:APPVEYOR_REPO_TAG -eq "true") -and
+          ($Env:APPVEYOR_REPO_NAME -eq "${Env:GITHUB_ORG}/${Env:GITHUB_REPO}")) {
         $tar_glob = ".\conda-bld\win-*\${Env:PYPKG}-${Env:APPVEYOR_REPO_TAG_NAME}-*.tar.bz2";
         Write-Host $tar_glob;
         if ($Env:APPVEYOR_REPO_TAG_NAME -like "*a*") {
