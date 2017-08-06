@@ -77,3 +77,4 @@ on_success:
       } else {
         & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress
       }
+    }
