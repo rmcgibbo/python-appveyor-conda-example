@@ -34,8 +34,7 @@ branches:
     - master
 
 init:
-  - ps: if ($Env:PLATFORM -eq "x64") { $Env:CONDA = "${Env:CONDA}x64" }
-#  - IF "%PLATFORM%"=="x64" ( SET "CONDA=%CONDA%-x64" )
+  - ps: if ($Env:PLATFORM -eq "x64") { $Env:CONDA = "${Env:CONDA}-x64" }
   - ps: Write-Host $Env:PYTHON_VERSION
   - ps: Write-Host $Env:CONDA
   - ps: Write-Host $Env:PLATFORM
@@ -79,10 +78,13 @@ on_success:
   - ps: 
       if ($Env:APPVEYOR_REPO_TAG -eq "true") {
         if ($Env:APPVEYOR_REPO_TAG_NAME -like "*a*") {
-          Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha" -Wait -Passthru
+          Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload
+          .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha" -Wait -Passthru
         } elseif ($Env:APPVEYOR_REPO_TAG_NAME -like "*b*") {
-          & anaconda -t $Env:ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta
+          Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload
+          .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta" -Wait -Passthru
         } else {
-          & anaconda -t $Env:ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress
+          Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload
+          .\conda-bld\win-*\*.tar.bz2 --no-progress" -Wait -Passthru
         }
       }
