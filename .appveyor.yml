@@ -34,16 +34,15 @@ branches:
     - master
 
 init:
-  - ECHO %PLATFORM% %CONDA% %PLATFORM%
   - IF "%PLATFORM%"=="x64" ( SET "CONDA=%CONDA%-x64" )
-  - ECHO %PYTHON_VERSION% %CONDA% %PLATFORM%
+  - ECHO "%PYTHON_VERSION%" "%CONDA%" "%PLATFORM%"
 
 install:
   # Make sure the compiler is accessible
   - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
 
   # Load the conda root environment, configure and install some packages
-  - 'CALL "%CONDA%\Scripts\activate"'
+  - '"%CONDA%\Scripts\activate.bat"'
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
   - conda info -a
@@ -70,13 +69,12 @@ artifacts:
   - path: 'conda-bld\win-*\*.tar.bz2'
 
 on_success:
-  - |+
-    IF "%APPVEYOR_REPO_TAG%" == "true" (
+  - IF "%APPVEYOR_REPO_TAG%" == "true" (
       IF "%APPVEYOR_REPO_TAG_NAME:a=%" == "%APPVEYOR_REPO_TAG_NAME%" (
-        anaconda -t %ANACONDA_TOKEN% upload .\\conda-bld\\win-*\\*.tar.bz2 --no-progress -l alpha
+        anaconda -t %ANACONDA_TOKEN% upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha
       ) ELSE IF "%APPVEYOR_REPO_TAG_NAME:b=%" == "%APPVEYOR_REPO_TAG_NAME%" (
-        anaconda -t %ANACONDA_TOKEN% upload .\\conda-bld\\win-*\\*.tar.bz2 --no-progress -l beta
+        anaconda -t %ANACONDA_TOKEN% upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta
       ) ELSE (
-        anaconda -t %ANACONDA_TOKEN% upload .\\conda-bld\\win-*\\*.tar.bz2 --no-progress
+        anaconda -t %ANACONDA_TOKEN% upload .\conda-bld\win-*\*.tar.bz2 --no-progress
       )
     )
