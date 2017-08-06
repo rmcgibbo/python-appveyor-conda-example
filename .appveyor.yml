@@ -38,7 +38,6 @@ init:
   - ps: Write-Host $Env:PYTHON_VERSION
   - ps: Write-Host $Env:CONDA
   - ps: Write-Host $Env:GITHUB_REPO_NAME
-  - ps: Write-Host $Env:CONDA
   - ps: Write-Host $Env:PLATFORM
   - ps: Write-Host $Env:APPVEYOR_REPO_TAG
   - ps: Write-Host $Env:APPVEYOR_REPO_TAG_NAME
