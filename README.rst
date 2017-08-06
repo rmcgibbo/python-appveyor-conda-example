@@ -1,5 +1,5 @@
-.. image:: https://travis-ci.org/tovrstra/pycydemo.svg?branch=master
-    :target: https://travis-ci.org/tovrstra/pycydemo
+.. image:: https://travis-ci.org/tovrstra/python-cython-ci-example.svg?branch=master
+    :target: https://travis-ci.org/tovrstra/python-cython-ci-example
 .. image:: https://ci.appveyor.com/api/projects/status/e5anh744b456p5at/branch/master?svg=true
     :target: https://ci.appveyor.com/project/tovrstra/python-cython-ci-example
 

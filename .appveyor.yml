@@ -5,7 +5,7 @@ image: Visual Studio 2015
 skip_non_tags: true
 
 platform:
-- x86
+#- x86
 - x64
 
 environment:
@@ -37,6 +37,8 @@ init:
   - ECHO %PLATFORM% %CONDA% %PLATFORM%
   - IF "%PLATFORM%"=="x64" ( SET CONDA=%CONDA%-x64 )
   - ECHO %PYTHON_VERSION% %CONDA% %PLATFORM%
+  - dir
+  - dir c:
 
 install:
   # Make sure the compiler is accessible
