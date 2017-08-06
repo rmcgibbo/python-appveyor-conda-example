@@ -15,6 +15,7 @@ requirements:
     - numpy
     - cython >=0.24.1
     - setuptools
+    - nose
   run:
     - python
     - numpy
