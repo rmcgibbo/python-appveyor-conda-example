@@ -69,7 +69,11 @@ artifacts:
   - path: 'conda-bld\win-*\*.tar.bz2'
 
 on_success:
+  # This is virtually impossible with a normal dos batch script...
+  # Upload to anaconda, with the correct label derived from the version tag.
   - ps: 
+      Write-Host $APPVEYOR_REPO_TAG
+      Write-Host $APPVEYOR_REPO_TAG_NAME
       if ($APPVEYOR_REPO_TAG -eq "true") {
         if ($APPVEYOR_REPO_TAG_NAME -like "*a*") {
           & anaconda -t $ANACONDA_TOKEN upload .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha
