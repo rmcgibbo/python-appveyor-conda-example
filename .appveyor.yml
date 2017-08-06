@@ -37,8 +37,7 @@ init:
   - ECHO %PLATFORM% %CONDA% %PLATFORM%
   - IF "%PLATFORM%"=="x64" ( SET CONDA=%CONDA%-x64 )
   - ECHO %PYTHON_VERSION% %CONDA% %PLATFORM%
-  - dir
-  - "dir c:\\"
+  - "dir c:\\Miniconda-x64"
 
 install:
   # Make sure the compiler is accessible
