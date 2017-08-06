@@ -77,14 +77,16 @@ on_success:
   # Upload to anaconda, with the correct label derived from the version tag.
   - ps: 
       if ($Env:APPVEYOR_REPO_TAG -eq "true") {
+        $tar_glob = ".\conda-bld\win-*\${Env:PYPKG}-${Env:APPVEYOR_REPO_TAG_NAME}-*.tar.bz2";
+        Write-Hist $tar_glob;
         if ($Env:APPVEYOR_REPO_TAG_NAME -like "*a*") {
           Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload
-          .\conda-bld\win-*\*.tar.bz2 --no-progress -l alpha" -Wait -Passthru
+          $tar_glob --no-progress -l alpha" -Wait -Passthru
         } elseif ($Env:APPVEYOR_REPO_TAG_NAME -like "*b*") {
           Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload
-          .\conda-bld\win-*\*.tar.bz2 --no-progress -l beta" -Wait -Passthru
+          $tar_glob --no-progress -l beta" -Wait -Passthru
         } else {
           Start-Process -FilePath anaconda -ArgumentList "-t $Env:ANACONDA_TOKEN upload
-          .\conda-bld\win-*\*.tar.bz2 --no-progress" -Wait -Passthru
+          $tar_glob --no-progress" -Wait -Passthru
         }
       }
