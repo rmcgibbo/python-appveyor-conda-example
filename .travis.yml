@@ -18,6 +18,7 @@ env:
     # ANACONDA_TOKEN encrypted
     - secure: "EwDvNNbo6xnXz99ggD//LSbi0Bs8MNME3AuxAPB7LQiSsFcMZ3EETE1OkAmvSQDTgCjpO6x0izy8i3H+H249f/FI89bfPMvd67RB1YQAnkPj05HWx9zUxyCGaxdSMdw0IKLZBUq2itwSsx6+ltbNhgCAbWxB7vOBpNeIHmk7zv753sSfk5C/cI48SzZyRbfliAMqcfXyj6kM3uhmAVmQ/Li5wkXY7Owhp9oYw1/Lpfl0FZUA5km3jUdCWg/yMQ0rdKtDvm749GASIIKChIdjmSFlfAc8pvKahHfpiL1XO9+NdwflU7AMkg6RYZpDxyM5wt86MdyLyIOxqzhD8a4DNzkpm2u9eGsxx77SxtteNVkDkxkt1xhW5Vw3amdIIKn+/VVR1Oyq8A13ZzLCtiqvrn+lJaWvejpF39fJPBXtvWxBmDJQYOL98nrG8vNwyFw6dQOgMKJEtfmxEH/2gjeJvi/cY8aNUMrVDWF304v9rrbO6Nm9LrM220Tq1/OfSdgqb9hBo7EwyDHZ9kV0yRLcU30LBDOGlBqa9BUq/CQbPFjWLfJuUqpVFKBOpvmBFt9OSP53m45DqcVWSdNBDeCawlpaDHfHJ95fUi+kS04KkmzaBos6vWpyxs2oIylLhi+r3SQYR1jyavG0r14d7SXLa/AU11f+p6eEoiM6Zp3fPIQ="
     - PYPKG=pycydemo
+    - GITHUB_REPO=python-cython-ci-example
     - GITHUB_ORG=tovrstra
 install:
 # Get miniconda. Take the right version, so re-installing python is only needed for 3.5.
@@ -75,7 +76,7 @@ deploy:
     secure: "DdyEtr5UyecM7gZwK+Q8MbzVzoYuyKQPVLViYgEZI9Fy6fXMA7pLlmOscswAT7rl5RYAUHK8KvMzWlokssxZbs++PpfKw+8ExidP8XiJqXCWJQdhjXdRuI9SxKMv4TLOr8i39NgbD7U9YXglSJJv1E8XpesqYPqJa4Q5cDA0mt6e+ys9rA6wLVHF1Lt/i35WZyXRFKqKwdgodRxsCK7+r2wxgI0MqEIonASzrIXZ72Nif0TzjI7PAWiZELoukqGCY1KV4FONqSl6hfV7XROD23aBVRLWvZa5gapUGyk+RVRzBMtI/ykZbzp8bIvWYiIqUbUSzObW5ope13tWXka4e7DdqtteLIHz78R4y5kUJOxdCYvGbsSLK4DisqE5LOH6+4XiDhuJJeAAqRLDkDeIdwMshT76hMk3YVJnZt0n9qdLadnm5x4Fej5dJNicOmN1N0TJK/N4Xq3rMdBZLPpG7hL+MfcPCfcHGUDa4NW9S+gQRrh4ljDjiISccS2J1Wg87ELNnkrRkCGsp5uvrsmz0N3qRnfQoxzXOug9bGylZkAMwMBV+L6kbEDHsPxcm7pCfizzoNoMlK8Tw5GUmjcw7yJz0yp9d0YOJemyw4yVr3d9UpLCMtzbLQurmp9GqpN6TE8WUqpluxKv2adoA7lnFkLfxVU+cBcgLdl+Js0cXJo="
   file: dist/${PYPKG}-${TRAVIS_TAG}.tar.gz
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     tags: true
     condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
   prerelease: false
@@ -86,7 +87,7 @@ deploy:
     secure: "DdyEtr5UyecM7gZwK+Q8MbzVzoYuyKQPVLViYgEZI9Fy6fXMA7pLlmOscswAT7rl5RYAUHK8KvMzWlokssxZbs++PpfKw+8ExidP8XiJqXCWJQdhjXdRuI9SxKMv4TLOr8i39NgbD7U9YXglSJJv1E8XpesqYPqJa4Q5cDA0mt6e+ys9rA6wLVHF1Lt/i35WZyXRFKqKwdgodRxsCK7+r2wxgI0MqEIonASzrIXZ72Nif0TzjI7PAWiZELoukqGCY1KV4FONqSl6hfV7XROD23aBVRLWvZa5gapUGyk+RVRzBMtI/ykZbzp8bIvWYiIqUbUSzObW5ope13tWXka4e7DdqtteLIHz78R4y5kUJOxdCYvGbsSLK4DisqE5LOH6+4XiDhuJJeAAqRLDkDeIdwMshT76hMk3YVJnZt0n9qdLadnm5x4Fej5dJNicOmN1N0TJK/N4Xq3rMdBZLPpG7hL+MfcPCfcHGUDa4NW9S+gQRrh4ljDjiISccS2J1Wg87ELNnkrRkCGsp5uvrsmz0N3qRnfQoxzXOug9bGylZkAMwMBV+L6kbEDHsPxcm7pCfizzoNoMlK8Tw5GUmjcw7yJz0yp9d0YOJemyw4yVr3d9UpLCMtzbLQurmp9GqpN6TE8WUqpluxKv2adoA7lnFkLfxVU+cBcgLdl+Js0cXJo="
   file: dist/${PYPKG}-${TRAVIS_TAG}.tar.gz
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     tags: true
     condition: "$TRAVIS_TAG == *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
   prerelease: true
@@ -94,21 +95,21 @@ deploy:
   skip_cleanup: true
   script: anaconda -t $ANACONDA_TOKEN upload -l alpha ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     tags: true
     condition: "$TRAVIS_TAG == *a*"
 - provider: script
   skip_cleanup: true
   script: anaconda -t $ANACONDA_TOKEN upload -l beta ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     tags: true
     condition: "$TRAVIS_TAG == *b*"
 - provider: script
   skip_cleanup: true
   script: anaconda -t $ANACONDA_TOKEN upload -l main ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     tags: true
     condition: "$TRAVIS_TAG != *[ab]*"
 - provider: pypi
@@ -118,7 +119,7 @@ deploy:
     # Encrypted PyPI password
     secure: "Nyg+0ma+ZwLXO141lpf/7/BNGP96MWdZDsqh92+nDnqq69hw4LIIvQt0ONF+DI5BYgWmW2XfWmvgNR+ukP+93oXZ5HH6pnGROx9+QCueOCsOYZyQRUFrzpa97S7w+SX/2R42duhfetS+Vxf7lJA7bN6vdmiGge2mzGb6pys61nnpu75xpeA/KRse6gGp5ePTIkLmvOODlLHyQ+ipmNJBJ3OWYSH+QjRvlghDIpjxetdfvpDTJ5HHfsf9/E4GVNV37CrJ4h3BFycy2U2FJIwno10nkndzT1VLCz7RTweY9guEy1k+o6LxsJ0xs8rTj73tdvf6PgrHJnm0tReiaenUmm027p5S6gxDiaqpv5gyyRFcepOfj63rC2sA3N/aiTDNIb9spVAPHwQVMcIkWLj5kG8DelAs7FqaH8xJ2pMaepKoNVrZD2XNsEsJjrgmoSAoeLlq9lRmJo4opgxFqCoGbeFDPzMOa4LtkMEm3FzCkmY9c6TkEcOwRCBdlgfriI9QlIA9TFpLyYbrEipWPHGhAhAqoNYHXc/3jyJ3oUZvXOaA8sGtmfl34ivfgBObLe9UTJ9JczamhBJL2Std1gc1NBbJQlYybo1n3deBfW4B9SuoVZ8T3aGfJLu2tZ+vJjmnRZB+3vRoyzzhT4fngVY2PpwYJQ23Ot4PWxrxx2oWEYA="
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     tags: true
     condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
 - provider: pages
@@ -129,6 +130,6 @@ deploy:
   project_name: ${PYPKG}
   local_dir: doc/_build/html
   on:
-    repo: ${GITHUB_ORG}/${PYPKG}
+    repo: ${GITHUB_ORG}/${GITHUB_REPO}
     condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
     tags: true
