@@ -81,7 +81,7 @@ on_success:
   # Upload to anaconda, with the correct label derived from the version tag.
   - ps:
       if (($Env:APPVEYOR_REPO_TAG -eq "true") -and
-          ($Env:APPVEYOR_REPO_NAME -eq ${Env:GITHUB_REPO_NAME}") {
+          ($Env:APPVEYOR_REPO_NAME -eq ${Env:GITHUB_REPO_NAME}) {
         $tar_glob = ".\conda-bld\win-*\${Env:PYPKG}-${Env:APPVEYOR_REPO_TAG_NAME}-*.tar.bz2";
         Write-Host $tar_glob;
         if ($Env:APPVEYOR_REPO_TAG_NAME -like "*a*") {
