@@ -1,17 +1,3 @@
-os:
-  - linux
-  - osx
-osx_image: xcode8.3
-dist: trusty
-sudo: false
-
-# For testing only:
-#branches:
-#  only:
-#    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
-
-# Do not use Travis Python to save some time.
-language: generic
 env:
   matrix:
   - MYCONDAPY=2.7
@@ -26,6 +12,21 @@ env:
     - secure: "eVqw72IFej1iFYefMNd67CXu82CiLrpten2SYarRsnrn5BIHFIrnNmeZ7ZVBv35oHsfk9rCJZBjwUKlzDKDKi9KX7NqVz2hMMJGxnHrAAdy4fYEPj0sRp9thtfsgRs24Ekmeyo/mqAd/qZOhDEGKJFERdvrTXIe0Gv4imKJDv5ZPdp7uelMGTS7nWRHa2uqKhGtEE8tEKtdsBJh27rjPv4nfyjfg3gsS8cbAL7gPBs5+5yZZo6SVJjpWBrWSIKpPBHqxFx9d6Rt/ebLbVNriUzJoS7lP4KT7CnllgQDY39sm0WT0XD41Z2FsbziZ5u4ede9rGIsJpB3Nls554dvb/saxlnO4fzAEu4tTT4ErRRdJaaAgxkx/CMDTL5ztKlyeh9Pq1qPzhaFDjG5qnE3ES1y8jyQkiZ583JMFvoCyGditFpBxEA7xOHCPpbN6D4U6JamlY9Ol7SlNpgfEH+/dFyOQ73r5skmj8zBbxAFaUK1vtpp7xRJDgxBU3ZRyHPq333Te0sxwikX4GTdBH0jTmWA25BzjgANPda5WI4RgQxNZ4f4GJJm1ldUziVl/SSltUBp5WIx3VjmeNNLRSygXyg/OleLH0pYtQO4fKb2DPo80TAO58Bqu4f0haPuymX7D5xB/L5y+GidJdJSuQ+c49YUNpROlGOJ4WrcCN1yrAT8="
     - PYPKG=pycydemo
     - GITHUB_REPO_NAME=tovrstra/python-cython-ci-example
+
+# Do not use Travis Python to save some time.
+language: generic
+os:
+  - linux
+  - osx
+osx_image: xcode8.3
+dist: trusty
+sudo: false
+
+# For testing only:
+#branches:
+#  only:
+#    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+
 install:
 # Get miniconda. Take the right version, so re-installing python is only needed for 3.5.
 - if [[ "$MYCONDAPY" == "2.7" ]]; then

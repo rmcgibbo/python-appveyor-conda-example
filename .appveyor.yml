@@ -1,13 +1,3 @@
-version: '{build}'
-image: Visual Studio 2015
-
-# For testing only...
-#skip_non_tags: true
-
-platform:
-- x86
-- x64
-
 environment:
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
@@ -28,6 +18,16 @@ environment:
 
     - PYTHON_VERSION: 3.6
       CONDA: C:\Miniconda36
+
+version: '{build}'
+image: Visual Studio 2015
+
+# For testing only...
+#skip_non_tags: true
+
+platform:
+- x86
+- x64
 
 branches:
   only:
