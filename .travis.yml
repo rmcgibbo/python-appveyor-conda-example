@@ -43,11 +43,14 @@ install:
     fi;
   fi
 - bash miniconda.sh -b -p $HOME/miniconda
-- export PATH="$HOME/miniconda/bin:$PATH"
+- source $HOME/miniconda/bin/activate
 - hash -r
 
 # Configure conda and get a few essentials
 - conda config --set always_yes yes --set changeps1 no
+# Needed for compiler('c') function, temporary solution:
+# https://github.com/conda/conda-build/issues/2263
+- conda config --add channels c3i_test
 - conda update -q conda
 # Get the right python version for building. This only does something for 3.5.
 # Install extra package needed to make things work. Most things can be listed as

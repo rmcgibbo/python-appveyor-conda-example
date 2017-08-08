@@ -44,22 +44,24 @@ init:
   - ps: Write-Host $Env:APPVEYOR_REPO_NAME
 
 install:
-  # Make sure the compiler is accessible
-  - '"%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM%'
-
   # Load the conda root environment, configure and install some packages
   - '"%CONDA%\Scripts\activate.bat"'
   - conda config --set always_yes yes --set changeps1 no
+  # Needed for compiler('c') function, temporary solution:
+  # See https://github.com/conda/conda-build/issues/2263
+  - conda config --add channels c3i_test
   - conda update -q conda
   - conda info -a
-  - conda install conda-build anaconda-client numpy cython
+  # A few things must be installed for the build and deployment steps. Also dependencies
+  # for setup.py must be pre-installed.
+  - conda install python=%PYTHON_VERSION% conda-build anaconda-client numpy cython
 
 build: false
 
 test_script:
   # Build the package
   - git fetch origin --tags
-  - "%CMD_IN_ENV% conda build tools/conda.recipe"
+  - conda build tools/conda.recipe"
 
   # Install the package
   - conda install --use-local %PYPKG%
