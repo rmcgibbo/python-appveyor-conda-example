@@ -1,0 +1,27 @@
+package:
+  version: "{{ load_setup_py_data().version }}"
+  name: 'pycydemo'
+
+source:
+  path: ../../
+
+build:
+  number: 0
+  script: python setup.py install
+
+requirements:
+  build:
+    - python
+    - numpy
+    - cython >=0.24.1
+    - {{ compiler("c") }}
+    - setuptools
+    - nose
+  run:
+    - python
+    - numpy
+    - nose
+
+about:
+  home: https://github.com/tovrstra/python-cython-ci-example
+  license: MIT

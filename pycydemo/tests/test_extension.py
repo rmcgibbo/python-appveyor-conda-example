@@ -1,4 +1,4 @@
-from pyappveyordemo.extension import some_function
+from pycydemo.extension import some_function
 from nose.tools import assert_equal
 
 
