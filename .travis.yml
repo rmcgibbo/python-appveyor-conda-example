@@ -22,10 +22,9 @@ osx_image: xcode8.3
 dist: trusty
 sudo: false
 
-# For testing only:
-#branches:
-#  only:
-#    - /^\d+\.\d+(\.\d+)?(-\S*)?$/
+branches:
+  only:
+    - master
 
 install:
 # Get miniconda. Take the right version, so re-installing python is only needed for 3.5.
