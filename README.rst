@@ -21,3 +21,4 @@ Additional features:
   safe to upload to PyPI.
 - Documentation deployment to gh-pages (Travis).
 - CI Testing after installation on Travis or AppVeyor instance.
+- Code coverage with codecov.io

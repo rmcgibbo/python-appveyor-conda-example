@@ -54,6 +54,9 @@ install:
 # dependencies on metal.yaml and setup.py, unless setup.py already imports them.
 # Install conda tools for packaging and uploading
 - conda install python=${MYCONDAPY} numpy cython sphinx conda-build anaconda-client
+# Install more recent stuff with pip
+- pip install codecov coverage
+# Show conda info for debugging
 - conda info -a
 
 script:
@@ -72,7 +75,11 @@ script:
 - (cd doc; make html)
 
 # Run tests out of source tree, to make sure that installed version is tested.
-- (cd; nosetests $PYPKG -v --processes=2 --detailed-errors --process-timeout=600)
+- (cd; nosetests $PYPKG -v --detailed-errors --with-coverage --cover-package=$PYPKG --cover-tests --cover-xml)
+
+after_success:
+# Upload the coverage analysis
+- codecov -f ~/coverage.xml
 
 # In deployment, the env var TRAVIS_TAG contains the name of the current tag, if any.
 deploy:
