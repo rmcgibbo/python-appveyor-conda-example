@@ -68,7 +68,7 @@ test_script:
   - conda install --use-local %PYPKG%
 
   # Run the tests outside the source tree.
-  - pushd "%HOMEPATH%" && (nosetests %PYPKG% -v --detailed-errors --with-coverage --cover-package=%PYPKG% --cover-tests --cover-xml & popd)
+  - pushd "%HOMEPATH%" && (nosetests %PYPKG% -v --detailed-errors --with-coverage --cover-package=%PYPKG% --cover-tests --cover-erase --cover-inclusive --cover-branches --cover-xml & popd)
 
 after_test:
   # Copy the conda build to the home dir, such that it can be registerd as an artifact
