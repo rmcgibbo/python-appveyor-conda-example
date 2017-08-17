@@ -48,11 +48,15 @@ else:
     with open(fn_version, 'w') as fh:
         fh.write(version_template.format(__version__))
 
+def readme():
+    with open('README.rst') as f:
+        return f.read()
 
 setup(
     name=pypkg,
     version=__version__,
     description='Demo python+cython project',
+    long_description=readme(),
     author='Toon Verstraelen',
     author_email='Toon.Verstraelen@UGent.be',
     url='https://github.com/tovrstra/python-cython-ci-example',
