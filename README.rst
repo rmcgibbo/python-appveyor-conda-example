@@ -4,6 +4,8 @@
     :target: https://ci.appveyor.com/project/tovrstra/python-cython-ci-example
 .. image:: https://anaconda.org/tovrstra/pycydemo/badges/version.svg
     :target: https://anaconda.org/tovrstra/pycydemo
+.. image:: https://codecov.io/gh/theochem/python-cython-ci-example/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/theochem/python-cython-ci-example
 
 Demo project for building and deploying a Python+Cython packages with AppVeyor
 CI and Travis CI.
@@ -20,7 +22,9 @@ Additional features:
 - PyPI source release. Stable releases only stable only, because others are not
   safe to upload to PyPI.
 - Documentation deployment to gh-pages (Travis).
-- CI Testing after installation on Travis or AppVeyor instance
+- CI Testing after installation on Travis or AppVeyor instance.
+- Code coverage with codecov.io.
+
 
 The CI machinery in this project is "easily" used in other projects. The following files/parts need to be copied over (and modified):
 
