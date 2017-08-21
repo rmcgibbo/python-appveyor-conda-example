@@ -19,7 +19,7 @@ setup(
     long_description=readme(),
     author='Toon Verstraelen',
     author_email='Toon.Verstraelen@UGent.be',
-    url='https://github.com/tovrstra/python-cython-ci-example',
+    url='https://github.com/theochem/python-cython-ci-example',
     cmdclass={'build_ext': Cython.Build.build_ext},
     package_dir = {'pycydemo': 'pycydemo'},
     packages=['pycydemo', 'pycydemo.tests'],
