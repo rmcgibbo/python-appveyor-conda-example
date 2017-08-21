@@ -22,5 +22,5 @@ requirements:
     - nose
 
 about:
-  home: https://github.com/tovrstra/python-cython-ci-example
+  home: https://github.com/theochem/python-cython-ci-example
   license: MIT

@@ -1,16 +1,16 @@
 .. image:: https://travis-ci.org/theochem/python-cython-ci-example.svg?branch=master
     :target: https://travis-ci.org/theochem/python-cython-ci-example
 .. image:: https://ci.appveyor.com/api/projects/status/e5anh744b456p5at/branch/master?svg=true
-    :target: https://ci.appveyor.com/project/tovrstra/python-cython-ci-example
-.. image:: https://anaconda.org/tovrstra/pycydemo/badges/version.svg
-    :target: https://anaconda.org/tovrstra/pycydemo
+    :target: https://ci.appveyor.com/project/theochem/python-cython-ci-example
+.. image:: https://anaconda.org/theochem/pycydemo/badges/version.svg
+    :target: https://anaconda.org/theochem/pycydemo
 .. image:: https://codecov.io/gh/theochem/python-cython-ci-example/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/theochem/python-cython-ci-example
 
 Demo project for building and deploying a Python+Cython packages with AppVeyor
 CI and Travis CI.
 
-This is based on a similar demo: https://github.com/tovrstra/python-appveyor-conda-example
+This is based on a similar demo: https://github.com/theochem/python-appveyor-conda-example
 Additional features:
 
 - Less auxiliary scripts, making more use of recent Travis and AppVeyor built-in
@@ -38,7 +38,7 @@ The CI machinery in this project is "easily" used in other projects. The followi
 Making tokens:
 
 - Github: https://github.com/settings/tokens (scopes repo:public_repo)
-- Anaconda: https://anaconda.org/tovrstra/settings/access Scopes:
+- Anaconda: https://anaconda.org/theochem/settings/access Scopes:
     - api:read (Allow read access to the API site)
     - api:write (Allow write access to the API site)
 
