@@ -22,5 +22,9 @@ requirements:
     - nose
 
 about:
+  description: Demo python+cython project
   home: https://github.com/theochem/python-cython-ci-example
   license: MIT
+
+extra:
+  recipe-maintainers: Toon Verstraelen <toon.verstraelen@gmail.com>
