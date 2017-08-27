@@ -53,7 +53,7 @@ install:
 # Install conda tools for packaging and uploading
 - conda install python=${MYCONDAPY} numpy cython sphinx conda-build anaconda-client
 # Install more recent stuff with pip
-- pip install codecov coverage
+- pip install codecov coverage pylint pycodestyle pydocstyle
 # Show conda info for debugging
 - conda info -a
 
@@ -98,7 +98,7 @@ script:
 # Run nosetests without coverage.xml output. That file is broken by nosetests (pyx files
 # not include) and gets priority over .coverage, which contains everything.
 - coverage erase;
-  nosetests ${PROJECTNAME} -v --detailed-errors --with-coverage --cover-package=${PROJECTNAME} --cover-tests --cover-inclusive --cover-branches;
+  nosetests ${PYPKG} -v --detailed-errors --with-coverage --cover-package=${PYPKG} --cover-tests --cover-inclusive --cover-branches;
   coverage xml -i
 # Dynamic linting
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
