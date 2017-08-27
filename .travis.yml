@@ -1,7 +1,6 @@
 env:
   matrix:
   - MYCONDAPY=2.7
-  - MYCONDAPY=3.5
   - MYCONDAPY=3.6
   global:
     # ANACONDA_TOKEN
@@ -29,7 +28,7 @@ branches:
 
 
 install:
-# Get miniconda. Take the right version, so re-installing python is only needed for 3.5.
+# Get miniconda. Take the right version, so re-installing python is hopefully not needed.
 - if [[ "$MYCONDAPY" == "2.7" ]]; then
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -50,7 +49,6 @@ install:
 # Configure conda and get a few essentials
 - conda config --set always_yes yes --set changeps1 no
 - conda update -q conda
-# Get the right python version for building. This only does something for 3.5.
 # Install extra package needed to make things work. Most things can be listed as
 # dependencies on metal.yaml and setup.py, unless setup.py already imports them.
 # Install conda tools for packaging and uploading
