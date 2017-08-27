@@ -26,7 +26,6 @@ branches:
     - master
     - /^[0-9]+\.[0-9]+(\.[0-9]+)?([ab][0-9]+)?$/
 
-
 install:
 # Get miniconda. Take the right version, so re-installing python is hopefully not needed.
 - if [[ "$MYCONDAPY" == "2.7" ]]; then
@@ -58,23 +57,63 @@ install:
 # Show conda info for debugging
 - conda info -a
 
+# Install the latest cardboardlinter
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
+  fi
+
+
 script:
+# Static linting
+# --------------
+
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    cardboardlinter --refspec $TRAVIS_BRANCH -f static
+  fi
+
+# Testing with conda package
+# --------------------------
+
 # Build the conda package
 - git fetch origin --tags
 - conda build -q tools/conda.recipe
+# Install Conda package
+- conda install --use-local $PYPKG
+# Run the unittests, using the installed package
+- (cd; nosetests ${PYPKG} -v --detailed-errors)
+
+# In-place building and testing
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# This is allows for coverage analysis and dynamic linting. The compiler settings used
+# here are not suitable for releases, so we need to recompile and rerun the tests.
+
+# Install GCC compilers for in-place builds, even on OSX because clang does not manage to
+# compiler our C++ code.
+- conda install gcc libgcc;
+
+# Uninstall conda package, to be sure. The conda cpp package is still used.
+- conda uninstall ${PYPKG}
+- python setup.py build_ext -i --define CYTHON_TRACE_NOGIL
+# Run nosetests without coverage.xml output. That file is broken by nosetests (pyx files
+# not include) and gets priority over .coverage, which contains everything.
+- coverage erase;
+  nosetests ${PROJECTNAME} -v --detailed-errors --with-coverage --cover-package=${PROJECTNAME} --cover-tests --cover-inclusive --cover-branches;
+  coverage xml -i
+# Dynamic linting
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
+  fi
+
+# Some other stuff
+# ----------------
 
 # Build source package, should work too and needed for deployment to Github and
 # PyPI.
 - python setup.py sdist
 
-# Install Conda package
-- conda install --use-local $PYPKG
-
 # Compile documentation
 - (cd doc; make html)
-
-# Run tests out of source tree, to make sure that installed version is tested.
-- (cd; nosetests $PYPKG -v --detailed-errors --with-coverage --cover-package=$PYPKG --cover-tests --cover-erase --cover-inclusive --cover-branches --cover-xml)
 
 after_success:
 # Upload the coverage analysis

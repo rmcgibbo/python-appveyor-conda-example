@@ -16,10 +16,12 @@ requirements:
     - cython >=0.24.1
     - setuptools
     - nose
+    - gcc
   run:
     - python
     - numpy
     - nose
+    - libgcc
 
 about:
   description: Demo python+cython project
