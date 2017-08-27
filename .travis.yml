@@ -119,6 +119,13 @@ after_success:
 # Upload the coverage analysis
 - codecov -f ~/coverage.xml
 
+before_deploy:
+# Try to set some env vars to configure deployment
+- export IS_PRERELEASE=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("true" if ("a" in tt or "b" in tt) else "false")')
+- echo ${IS_PRERELEASE}
+- export ANACONDA_LABEL=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("alpha" if ("a" in tt) else ("beta" if "b" in tt else "main"))')
+- echo ${ANACONDA_LABEL}
+
 # In deployment, the env var TRAVIS_TAG contains the name of the current tag, if any.
 deploy:
 - provider: releases
@@ -128,38 +135,16 @@ deploy:
   on:
     repo: ${GITHUB_REPO_NAME}
     tags: true
-    condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
-  prerelease: false
-- provider: releases
-  skip_cleanup: true
-  api_key: ${GITHUB_TOKEN}
-  file: dist/${PYPKG}-${TRAVIS_TAG}.tar.gz
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    tags: true
-    condition: "$TRAVIS_TAG == *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
-  prerelease: true
+    condition: "$MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
+  prerelease: ${IS_PRERELEASE}
+
 - provider: script
   skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l alpha ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
+  script: anaconda -t $ANACONDA_TOKEN upload --force -l ${ANACONDA_LABEL} ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
   on:
     repo: ${GITHUB_REPO_NAME}
     tags: true
-    condition: "$TRAVIS_TAG == *a*"
-- provider: script
-  skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l beta ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    tags: true
-    condition: "$TRAVIS_TAG == *b*"
-- provider: script
-  skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l main ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    tags: true
-    condition: "$TRAVIS_TAG != *[ab]*"
+
 - provider: pypi
   skip_cleanup: true
   user: theochem
@@ -168,6 +153,7 @@ deploy:
     repo: ${GITHUB_REPO_NAME}
     tags: true
     condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
+
 - provider: pages
   skip_cleanup: true
   github_token: ${GITHUB_TOKEN}
