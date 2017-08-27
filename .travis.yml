@@ -68,7 +68,7 @@ script:
 # --------------
 
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-    cardboardlinter --refspec $TRAVIS_BRANCH -f static
+    cardboardlinter --refspec $TRAVIS_BRANCH -f static;
   fi
 
 # Testing with conda package
