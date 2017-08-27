@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
 import numpy as np
 from setuptools import setup, Extension
 import Cython.Build
