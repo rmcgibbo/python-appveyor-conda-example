@@ -1,3 +1,7 @@
+"""Get the version string from the git tag."""
+
+from __future__ import print_function
+
 import os
 import sys
 import subprocess
@@ -13,12 +17,26 @@ __version__ = '{}'
 
 
 def get_gitversion(pypkg, verbose):
-    # Try to get the version from git describe
+    """Try to get the version from git describe.
+
+    Parameters
+    ----------
+    pypkg : str
+        The name of the python package.
+    vernose : bool
+        If True, some info is printed on screen.
+
+    Returns
+    -------
+    version : str
+        The version.
+
+    """
     version = None
     try:
         if verbose:
             print('Trying to get the version from git describe')
-        git_describe = subprocess.check_output(["git", "describe", "--tags"])
+        git_describe = subprocess.check_output(['git', 'describe', '--tags'])
         version_words = git_describe.decode('utf-8').strip().split('-')
         version = version_words[0]
         if len(version_words) > 1:
@@ -32,11 +50,11 @@ def get_gitversion(pypkg, verbose):
     fn_version = os.path.join(os.path.dirname(__file__), '..', pypkg, 'version.py')
     if version is None:
         if verbose:
-            print('Trying to get the version from {}',format(fn_version))
+            print('Trying to get the version from {}'.format(fn_version))
         # Try to load the git version tag from version.py
         try:
-            with open(fn_version, 'r') as fh:
-                version = fh.read().split('=')[-1].replace('\'', '').strip()
+            with open(fn_version, 'r') as f:
+                version = f.read().split('=')[-1].replace('\'', '').strip()
         except IOError:
             print('Could not determine version. Giving up.')
             sys.exit(1)
@@ -46,7 +64,32 @@ def get_gitversion(pypkg, verbose):
         # Store the git version tag in version.py
         if verbose:
             print('Writing version to {}'.format(fn_version))
-        with open(fn_version, 'w') as fh:
-            fh.write(VERSION_TEMPLATE.format(version))
+        with open(fn_version, 'w') as f:
+            f.write(VERSION_TEMPLATE.format(version))
 
     return version
+
+
+def parse_args():
+    """Parse the command-line arguments."""
+    from argparse import ArgumentParser
+    parser = ArgumentParser('Determine version string from git tag')
+    parser.add_argument('pypkg', help='The name of the python package.')
+    parser.add_argument('--part', default='all', help='Part of the version string to get',
+                        choices=['all', 'major', 'minor', 'patch'])
+    args = parser.parse_args()
+    return args.pypkg, args.part
+
+
+def main():
+    """Print the version string derived from ``git describe --tags``."""
+    pypkg, part = parse_args()
+    version = get_gitversion(pypkg, False)
+    if part != 'all':
+        part = {'major': 0, 'minor': 1, 'patch': 2}[part]
+        version = version.split('.', 2)[part]
+    print(version)
+
+
+if __name__ == '__main__':
+    main()

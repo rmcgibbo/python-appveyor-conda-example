@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Package build and install script."""
 
 import numpy as np
 from setuptools import setup, Extension
@@ -6,20 +7,23 @@ import Cython.Build
 
 from tools.gitversion import get_gitversion
 
+
 def readme():
+    """Load README.rst for display on PyPI."""
     with open('README.rst') as f:
         return f.read()
 
+
 setup(
     name='pycydemo',
-    version=get_gitversion('pycydemo', verbose=(__name__=='__main__')),
+    version=get_gitversion('pycydemo', verbose=(__name__ == '__main__')),
     description='Demo python+cython project',
     long_description=readme(),
     author='Toon Verstraelen',
     author_email='Toon.Verstraelen@UGent.be',
     url='https://github.com/theochem/python-cython-ci-example',
     cmdclass={'build_ext': Cython.Build.build_ext},
-    package_dir = {'pycydemo': 'pycydemo'},
+    package_dir={'pycydemo': 'pycydemo'},
     packages=['pycydemo', 'pycydemo.tests'],
     ext_modules=[Extension(
         'pycydemo.extension',
