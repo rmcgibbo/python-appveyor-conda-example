@@ -1,7 +1,6 @@
 env:
   matrix:
   - MYCONDAPY=2.7
-  - MYCONDAPY=3.5
   - MYCONDAPY=3.6
   global:
     # ANACONDA_TOKEN
@@ -27,9 +26,8 @@ branches:
     - master
     - /^[0-9]+\.[0-9]+(\.[0-9]+)?([ab][0-9]+)?$/
 
-
 install:
-# Get miniconda. Take the right version, so re-installing python is only needed for 3.5.
+# Get miniconda. Take the right version, so re-installing python is hopefully not needed.
 - if [[ "$MYCONDAPY" == "2.7" ]]; then
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -50,37 +48,83 @@ install:
 # Configure conda and get a few essentials
 - conda config --set always_yes yes --set changeps1 no
 - conda update -q conda
-# Get the right python version for building. This only does something for 3.5.
 # Install extra package needed to make things work. Most things can be listed as
 # dependencies on metal.yaml and setup.py, unless setup.py already imports them.
 # Install conda tools for packaging and uploading
 - conda install python=${MYCONDAPY} numpy cython sphinx conda-build anaconda-client
 # Install more recent stuff with pip
-- pip install codecov coverage
+- pip install codecov coverage pylint pycodestyle pydocstyle
 # Show conda info for debugging
 - conda info -a
 
+# Install the latest cardboardlinter
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
+  fi
+
+
 script:
+# Static linting
+# --------------
+
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    cardboardlinter --refspec $TRAVIS_BRANCH -f static;
+  fi
+
+# Testing with conda package
+# --------------------------
+
 # Build the conda package
 - git fetch origin --tags
 - conda build -q tools/conda.recipe
+# Install Conda package
+- conda install --use-local $PYPKG
+# Run the unittests, using the installed package
+- (cd; nosetests ${PYPKG} -v --detailed-errors)
+
+# In-place building and testing
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# This is allows for coverage analysis and dynamic linting. The compiler settings used
+# here are not suitable for releases, so we need to recompile and rerun the tests.
+
+# Install GCC compilers for in-place builds, even on OSX because clang does not manage to
+# compiler our C++ code.
+- conda install gcc libgcc;
+
+# Uninstall conda package, to be sure. The conda cpp package is still used.
+- conda uninstall ${PYPKG}
+- python setup.py build_ext -i --define CYTHON_TRACE_NOGIL
+# Run nosetests without coverage.xml output. That file is broken by nosetests (pyx files
+# not include) and gets priority over .coverage, which contains everything.
+- coverage erase;
+  nosetests ${PYPKG} -v --detailed-errors --with-coverage --cover-package=${PYPKG} --cover-tests --cover-inclusive --cover-branches;
+  coverage xml -i
+# Dynamic linting
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+    cardboardlinter --refspec $TRAVIS_BRANCH -f 'dynamic';
+  fi
+
+# Some other stuff
+# ----------------
 
 # Build source package, should work too and needed for deployment to Github and
 # PyPI.
 - python setup.py sdist
 
-# Install Conda package
-- conda install --use-local $PYPKG
-
 # Compile documentation
 - (cd doc; make html)
-
-# Run tests out of source tree, to make sure that installed version is tested.
-- (cd; nosetests $PYPKG -v --detailed-errors --with-coverage --cover-package=$PYPKG --cover-tests --cover-erase --cover-inclusive --cover-branches --cover-xml)
 
 after_success:
 # Upload the coverage analysis
 - codecov -f ~/coverage.xml
+
+before_deploy:
+# Try to set some env vars to configure deployment
+- export IS_PRERELEASE=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("true" if ("a" in tt or "b" in tt) else "false")')
+- echo ${IS_PRERELEASE}
+- export ANACONDA_LABEL=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("alpha" if ("a" in tt) else ("beta" if "b" in tt else "main"))')
+- echo ${ANACONDA_LABEL}
 
 # In deployment, the env var TRAVIS_TAG contains the name of the current tag, if any.
 deploy:
@@ -91,38 +135,16 @@ deploy:
   on:
     repo: ${GITHUB_REPO_NAME}
     tags: true
-    condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
-  prerelease: false
-- provider: releases
-  skip_cleanup: true
-  api_key: ${GITHUB_TOKEN}
-  file: dist/${PYPKG}-${TRAVIS_TAG}.tar.gz
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    tags: true
-    condition: "$TRAVIS_TAG == *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
-  prerelease: true
+    condition: "$MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
+  prerelease: ${IS_PRERELEASE}
+
 - provider: script
   skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l alpha ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
+  script: anaconda -t $ANACONDA_TOKEN upload --force -l ${ANACONDA_LABEL} ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
   on:
     repo: ${GITHUB_REPO_NAME}
     tags: true
-    condition: "$TRAVIS_TAG == *a*"
-- provider: script
-  skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l beta ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    tags: true
-    condition: "$TRAVIS_TAG == *b*"
-- provider: script
-  skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l main ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
-  on:
-    repo: ${GITHUB_REPO_NAME}
-    tags: true
-    condition: "$TRAVIS_TAG != *[ab]*"
+
 - provider: pypi
   skip_cleanup: true
   user: theochem
@@ -131,6 +153,7 @@ deploy:
     repo: ${GITHUB_REPO_NAME}
     tags: true
     condition: "$TRAVIS_TAG != *[ab]* && $MYCONDAPY == 2.7 && $TRAVIS_OS_NAME == linux"
+
 - provider: pages
   skip_cleanup: true
   github_token: ${GITHUB_TOKEN}
