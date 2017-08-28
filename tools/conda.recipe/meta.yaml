@@ -1,11 +1,13 @@
 package:
-  version: "{{ PYCYDEMO_VERSION }}"
+  version: "{{ PROJECT_VERSION }}"
   name: 'pycydemo'
 
 source:
   path: ../../
 
 build:
+  script_env:
+   - PROJECT_VERSION
   number: 0
   script: python setup.py install
 
