@@ -2,7 +2,8 @@ linters:
 - import:
     packages: ['cellcutoff']
 - namespace:
-    filefilter: ['- */__init__.py', '- */test_*.py', '- *setup.py', '+ *.py', '+ *.pyx']
+    filefilter: ['- */__init__.py', '- */test_*.py', '- *setup.py', '- tools/*',
+                 '+ *.py', '+ *.pyx']
 - pylint:
 - pycodestyle:
 - pydocstyle:
