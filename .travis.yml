@@ -9,7 +9,7 @@ env:
     - secure: "dG5ClYlMT/EADB7tdCsuM/8blSopvYu9CLCnKMtRasbeZ8EjuVIpq8v+p+vbeg7KFIuFqFuFjsfTKVOOWhzIYhNMvrsGpWl8HjVcDx4PhIooEix465efF99bFMQudd7FpZ1HHuNyXhsmrbx+xVdieEMfJVH5yX8e2dCQu01hbPEbCVzaFnez6iOOPcACqLaoZg7ofZ7F/mc2wJPMfzouGKotl7FhSsaoIJ3g0cwJ8BF4kxmM4J6WYjGV4MfGf3JTK8pUwkfqRPigpZITchT48sS6yT0qnCNHs6Nic/RHB0cJlHFRlA2Gpi7OafVIQXBPaQpLxidZ7oN6JH0ztfq/RYIfrCaGNWjd6G7PfPPJbtT5lQlRGF7FOX/U6syy7pzSe+sFiHmlEZKYKc6jW+xwCXYOXoPB0ikjC9HMjI2jyVCYZzAcfdJThDDYU0IdgNn99ejbmBXefzQMLJAZLf+JTbRpxjh93KM7Xv46pn8cirRaT3Sun/g2U24/K63NN8jJIuxrzSsH9EURSg27J9O65Z3M0r98ru9IGau4j9ge0FD+K/YiOiOSnm/mNkpmiuap5vhX0C5vT54QCgIPeP1ERRyuYI+V2tzIUSUYgGmOt/zX+QF2qBy0ZUiyDXgA9awhQupxEbbXsLA/XOuidV1ODxqob193dGFKLayhwsJR78M="
     # PYPI_PASSWD
     - secure: "Qh6JLMS4EklyRXNptUwim9ZcJvJxGfR0Lmd+W9tLaQ9d+c11wr376pZDzzbaGv7fM/tscWRYaCk8qVveSzGbLHi3Fy7NTFDIpXCpuV1ZSgCEyTmQLtoJPLK6fZc/iNOZdg5vk2QDn7Mk11xWoPwekagMsl0+IOAZu+JEGBw14pTrqMAXkLL7xI34dGfuJaOAQHo7GprU2bIgV0vcJIV3wgifo79ouZGVLWoS9iJkJ73coKji86LN/QV8PGqDp/aqNwdQCu0WUz1WuG6DBCQMtdohKROpu97HFhvdPICIM7d58Pyi1JBVrjSlKHw/Sz8ThCDPRBP2UZnjc5xn7IA5zuAeOLxaXbdxdLGMvKYa897+gNXRgMRTryVo4O/9IbkYIPGM2fHAarhyDzuTjyjIhG1fwi13iWz6ub02hrHWnXNJ6eGwXdtqS0o0uu4RZ1SrAxjYxrPNbLgq29Df/ywyYqJl0aZ2hAbswwUM6GQip4n3V/gkKjlDo6BSM4Ja/TyIOyq+m7u40NfYuRCkkKio3Khg//YUCySmLZ/7Cup7LSP++U/Cewd6ycWafj/y0yfSEo9x5UzK74ilq3UGK684NXlw8A9Cp1PZa+Y0Ka+M2ycE1L9c6d19F5VqeQqivces1lmG59Zv2EJ/CkSw9n/Oyg/3IrxZ06KpunpOwVRiwAk="
-    - PYPKG=pycydemo
+    - PROJECT_NAME=pycydemo
     - GITHUB_REPO_NAME=theochem/python-cython-ci-example
 
 # Do not use Travis Python to save some time.
@@ -42,11 +42,11 @@ install:
     fi;
   fi
 - bash miniconda.sh -b -p $HOME/miniconda
-- export PATH="$HOME/miniconda/bin:$PATH"
+- source $HOME/miniconda/bin/activate
 - hash -r
 
 # Configure conda and get a few essentials
-- conda config --set always_yes yes --set changeps1 no
+- conda config --set always_yes yes
 - conda update -q conda
 # Install extra package needed to make things work. Most things can be listed as
 # dependencies on metal.yaml and setup.py, unless setup.py already imports them.
@@ -62,11 +62,14 @@ install:
     pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
   fi
 
+# Set the version info from the git tag
+- git fetch origin --tags
+- export PROJECT_VERSION=$(python tools/gitversion.py)
+- python tools/gitversion.py python > ${PROJECT_NAME}/version.py
 
 script:
 # Static linting
 # --------------
-
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
     cardboardlinter --refspec $TRAVIS_BRANCH -f static;
   fi
@@ -75,12 +78,11 @@ script:
 # --------------------------
 
 # Build the conda package
-- git fetch origin --tags
 - conda build -q tools/conda.recipe
 # Install Conda package
-- conda install --use-local $PYPKG
+- conda install --use-local ${PROJECT_NAME}
 # Run the unittests, using the installed package
-- (cd; nosetests ${PYPKG} -v --detailed-errors)
+- (cd; nosetests ${PROJECT_NAME} -v --detailed-errors)
 
 # In-place building and testing
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -93,12 +95,12 @@ script:
 - conda install gcc libgcc;
 
 # Uninstall conda package, to be sure. The conda cpp package is still used.
-- conda uninstall ${PYPKG}
+- conda uninstall ${PROJECT_NAME}
 - python setup.py build_ext -i --define CYTHON_TRACE_NOGIL
 # Run nosetests without coverage.xml output. That file is broken by nosetests (pyx files
 # not include) and gets priority over .coverage, which contains everything.
 - coverage erase;
-  nosetests ${PYPKG} -v --detailed-errors --with-coverage --cover-package=${PYPKG} --cover-tests --cover-inclusive --cover-branches;
+  nosetests ${PROJECT_NAME} -v --detailed-errors --with-coverage --cover-package=${PROJECT_NAME} --cover-tests --cover-inclusive --cover-branches;
   coverage xml -i
 # Dynamic linting
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
@@ -117,7 +119,7 @@ script:
 
 after_success:
 # Upload the coverage analysis
-- codecov -f ~/coverage.xml
+- codecov -f coverage.xml
 
 before_deploy:
 # Try to set some env vars to configure deployment
@@ -126,12 +128,12 @@ before_deploy:
 - export ANACONDA_LABEL=$(python -c 'import os; tt=os.environ["TRAVIS_TAG"]; print("alpha" if ("a" in tt) else ("beta" if "b" in tt else "main"))')
 - echo ${ANACONDA_LABEL}
 
-# In deployment, the env var TRAVIS_TAG contains the name of the current tag, if any.
+# In deployment, the env var TRAVIS_TAG contains the name of the current version, if any.
 deploy:
 - provider: releases
   skip_cleanup: true
   api_key: ${GITHUB_TOKEN}
-  file: dist/${PYPKG}-${TRAVIS_TAG}.tar.gz
+  file: dist/${PROJECT_NAME}-${TRAVIS_TAG}.tar.gz
   on:
     repo: ${GITHUB_REPO_NAME}
     tags: true
@@ -140,7 +142,7 @@ deploy:
 
 - provider: script
   skip_cleanup: true
-  script: anaconda -t $ANACONDA_TOKEN upload --force -l ${ANACONDA_LABEL} ${HOME}/miniconda/conda-bld/*/${PYPKG}-*.tar.bz2
+  script: anaconda -t $ANACONDA_TOKEN upload --force -l ${ANACONDA_LABEL} ${HOME}/miniconda/conda-bld/*/${PROJECT_NAME}-*.tar.bz2
   on:
     repo: ${GITHUB_REPO_NAME}
     tags: true
@@ -157,7 +159,7 @@ deploy:
 - provider: pages
   skip_cleanup: true
   github_token: ${GITHUB_TOKEN}
-  project_name: ${PYPKG}
+  project_name: ${PROJECT_NAME}
   local_dir: doc/_build/html
   on:
     repo: ${GITHUB_REPO_NAME}

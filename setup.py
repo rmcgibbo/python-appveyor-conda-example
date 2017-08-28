@@ -5,10 +5,19 @@ import numpy as np
 from setuptools import setup, Extension
 import Cython.Build
 
-from tools.gitversion import get_gitversion
+
+def get_version():
+    """Load the version from version.py, without importing it.
+
+    This function assumes that the last line in the file contains a variable defining the
+    version string with single quotes.
+
+    """
+    with open('pycydemo/version.py', 'r') as f:
+        return f.read().split('=')[-1].replace('\'', '').strip()
 
 
-def readme():
+def get_readme():
     """Load README.rst for display on PyPI."""
     with open('README.rst') as f:
         return f.read()
@@ -16,9 +25,9 @@ def readme():
 
 setup(
     name='pycydemo',
-    version=get_gitversion('pycydemo', verbose=(__name__ == '__main__')),
+    version=get_version(),
     description='Demo python+cython project',
-    long_description=readme(),
+    long_description=get_readme(),
     author='Toon Verstraelen',
     author_email='Toon.Verstraelen@UGent.be',
     url='https://github.com/theochem/python-cython-ci-example',
