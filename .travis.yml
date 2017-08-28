@@ -62,6 +62,10 @@ install:
     pip install --upgrade git+https://github.com/theochem/cardboardlint.git@master#egg=cardboardlint;
   fi
 
+# Set the version info from the git tag
+- git fetch origin --tags
+- export PYCYDEMO_VERSION=$(python tools/gitversion.py)
+- python tools/gitversion.py python > ${PYPKG}/version.py
 
 script:
 # Static linting
@@ -75,7 +79,6 @@ script:
 # --------------------------
 
 # Build the conda package
-- git fetch origin --tags
 - conda build -q tools/conda.recipe
 # Install Conda package
 - conda install --use-local $PYPKG

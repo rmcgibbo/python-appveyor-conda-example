@@ -1,5 +1,5 @@
 package:
-  version: "{{ load_setup_py_data().version }}"
+  version: "{{ PYCYDEMO_VERSION }}"
   name: 'pycydemo'
 
 source:
