@@ -119,7 +119,7 @@ script:
 
 after_success:
 # Upload the coverage analysis
-- codecov -f ~/coverage.xml
+- codecov -f coverage.xml
 
 before_deploy:
 # Try to set some env vars to configure deployment

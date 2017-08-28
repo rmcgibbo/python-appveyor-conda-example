@@ -58,7 +58,7 @@ install:
 - git fetch origin --tags
 - python tools\\gitversion.py > version.txt
 - set /P PROJECT_VERSION=<version.txt
-- python tools\\gitversion.py python > ${PROJECT_NAME}\\version.py
+- python tools\\gitversion.py python > %PROJECT_NAME%\\version.py
 
 build: false
 
