@@ -12,34 +12,28 @@ language: generic
 os:
   - linux
   - osx
-osx_image: xcode6.4
+osx_image: xcode8.3
 dist: trusty
 sudo: false
+
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/download # Sufficient to add miniconda.sh to TRAVIS cache.
+    - $HOME/miniconda # Add the installation to TRAVIS cache.
 
 branches:
   only:
     - master
     - /^[0-9]+\.[0-9]+(\.[0-9]+)?([ab][0-9]+)?$/
 
-install:
+before_install:
 # Get miniconda. Take the right version, so re-installing python is hopefully not needed.
-- if [[ "$MYCONDAPY" == "2.7" ]]; then
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh;
-    fi;
-  else
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
-    fi;
-  fi
-- bash miniconda.sh -b -p $HOME/miniconda
+- ./tools/travis_before_install.sh
+
+install:
 - source $HOME/miniconda/bin/activate
 - hash -r
-
 # Configure conda and get a few essentials
 - conda config --set always_yes yes
 - conda update -q conda
