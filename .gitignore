@@ -15,3 +15,6 @@ doc/_build/
 
 pycydemo/extension.c
 pycydemo/version.py
+
+#PyCharm
+.idea
