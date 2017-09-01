@@ -22,6 +22,9 @@ cache:
     - $HOME/download # Sufficient to add miniconda.sh to TRAVIS cache.
     - $HOME/miniconda # Add the installation to TRAVIS cache.
 
+before_cache:
+- rm -rf $HOME/miniconda/conda-bld $HOME/miniconda/locks $HOME/miniconda/pkgs $HOME/miniconda/var
+
 branches:
   only:
     - master
