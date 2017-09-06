@@ -1,0 +1,34 @@
+package:
+  version: "{{ PROJECT_VERSION }}"
+  name: 'pycydemo'
+
+source:
+  path: ../../
+
+build:
+  script_env:
+   - PROJECT_VERSION
+  number: 0
+  script: python setup.py install
+
+requirements:
+  build:
+    - python
+    - numpy
+    - cython >=0.24.1
+    - setuptools
+    - nose
+    - gcc     # [ not win ]
+  run:
+    - python
+    - numpy
+    - nose
+    - libgcc  # [ not win ]
+
+about:
+  description: Demo python+cython project
+  home: https://github.com/theochem/python-cython-ci-example
+  license: MIT
+
+extra:
+  recipe-maintainers: Toon Verstraelen <toon.verstraelen@gmail.com>

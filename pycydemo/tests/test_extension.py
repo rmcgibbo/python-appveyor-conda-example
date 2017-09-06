@@ -1,4 +1,6 @@
-from pyappveyordemo.extension import some_function
+"""Unit tests for pycydemo."""
+
+from pycydemo.extension import some_function
 from nose.tools import assert_equal
 
 
