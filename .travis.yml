@@ -2,10 +2,11 @@ language: c
 
 env:
   matrix:
-    - python=2.6  CONDA_PY=26  CONDA_NPY=18
-    - python=2.7  CONDA_PY=27  CONDA_NPY=18
-    - python=3.3  CONDA_PY=33  CONDA_NPY=18
-    - python=3.4  CONDA_PY=34  CONDA_NPY=18
+    - python=2.7  CONDA_PY=27  CONDA_NPY=115
+    - python=3.4  CONDA_PY=34  CONDA_NPY=115
+    - python=3.5  CONDA_PY=35  CONDA_NPY=115
+    - python=3.6  CONDA_PY=36  CONDA_NPY=115
+    - python=3.7  CONDA_PY=37  CONDA_NPY=115
 
   global:
     - secure: "VbVG6isXjRCZeBu9J9NW5xosGfQlHKcuBkjmb8vc2drGjNMP7UctGo5O4fTdF4i70irqfQSUlVGWhgu+OFk4PZ/YadlMydG9z2tF9n0mYzrWxWBmb1EZBcHmwCdG+o52GBWD3VVHOggygx2uFIJJyQCEFHkyU4fdhVnhA+LZeq4="
